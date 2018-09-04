@@ -11,4 +11,5 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //ini adalah punya silfi, silfi enak dong ada beban biar kurus hahhaahaha
     }
+    //yoga comit eaa
 }
