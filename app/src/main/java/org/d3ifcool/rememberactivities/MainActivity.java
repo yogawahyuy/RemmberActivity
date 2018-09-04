@@ -12,6 +12,4 @@ public class MainActivity extends AppCompatActivity {
         //ini adalah punya silfi, silfi enak dong ada beban biar kurus hahhaahaha
     }
     //yoga comit eaa
-    //abis ini ku mau makan yeesss
-    //ku bisa komit
 }
