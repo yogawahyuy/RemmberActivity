@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">RememberActivities</string>
+    <string name="klik_di_sini">Klik Disini</string>
+    <string name="masuk_dengan_akun_google">Masuk dengan Akun Google</string>
+    <string name="masuk">Masuk</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="remember_activities">Remember Activities</string>
 </resources>

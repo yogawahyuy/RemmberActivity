@@ -38,7 +38,6 @@
                 android:id="@+id/username"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
-                android:drawableStart="@mipmap/ic_email"
                 android:hint="@string/email"
                 android:inputType="text"
                 android:textColorLink="@color/colorPrimary"
@@ -48,7 +47,7 @@
                 android:id="@+id/pass"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
-                android:drawableStart="@mipmap/ic_password"
+
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:textColorLink="@color/colorPrimary"
