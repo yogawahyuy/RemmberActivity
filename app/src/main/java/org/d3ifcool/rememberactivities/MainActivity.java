@@ -7,14 +7,14 @@ import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    TextView klikGoogle;
+    com.google.android.gms.common.SignInButton klikGoogle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //ini adalah punya silfi, silfi enak dong ada beban biar kurus hahhaahaha
-        klikGoogle = (TextView)findViewById(R.id.klik);
+        klikGoogle = (com.google.android.gms.common.SignInButton)findViewById(R.id.sign_in_button);
         klikGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
