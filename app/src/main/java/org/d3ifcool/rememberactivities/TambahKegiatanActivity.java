@@ -2,6 +2,10 @@ package org.d3ifcool.rememberactivities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+
+
+
 
 public class TambahKegiatanActivity extends AppCompatActivity {
     /*  private static final int EXISTING_LOADER=0;
@@ -61,6 +65,11 @@ public class TambahKegiatanActivity extends AppCompatActivity {
         */
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_tambah_kegiatan,menu);
+        return true;
+    }
     //dibawah ini adalah algoritma tambah kegiatan nama method "Add Data"
     /*
     private void addData(){
