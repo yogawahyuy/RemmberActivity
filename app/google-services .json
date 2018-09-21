@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "703722098218",
+    "firebase_url": "https://rememberactivities.firebaseio.com",
+    "project_id": "rememberactivities",
+    "storage_bucket": "rememberactivities.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703722098218:android:c11b9e290cd3a716",
+        "android_client_info": {
+          "package_name": "org.d3ifcool.rememberactivities"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703722098218-noomkddl5ot83unieqfuu4qd4n3r0j35.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjgH53cqYuapvN0osp6WwBqyoqES06i3E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
