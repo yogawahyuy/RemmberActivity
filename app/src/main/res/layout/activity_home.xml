@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e8d29c"
     tools:context="org.d3ifcool.rememberactivities.HomeActivity">
 
     <CalendarView
@@ -20,7 +21,7 @@
         android:layout_marginBottom="88dp"
         android:layout_marginEnd="25dp"
         android:tint="@android:color/background_light"
-        app:backgroundTint="@color/colorPrimaryDark"
+        app:backgroundTint="#b41b09"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <android.support.design.widget.FloatingActionButton
@@ -30,7 +31,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/floatingActionButton"
         android:layout_marginBottom="35dp"
-        app:backgroundTint="@color/colorPrimaryDark"
+        app:backgroundTint="#b41b09"
         app:srcCompat="@android:drawable/ic_popup_reminder" />
 
 </RelativeLayout>
