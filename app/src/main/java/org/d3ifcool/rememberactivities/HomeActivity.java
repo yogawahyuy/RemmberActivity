@@ -10,6 +10,7 @@ import android.view.View;
 public class HomeActivity extends AppCompatActivity {
 
     FloatingActionButton tambah;
+    FloatingActionButton pencapaian;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,14 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this,TambahKegiatanActivity.class);
                 startActivity(intent);
+            }
+        });
+        pencapaian = (FloatingActionButton)findViewById(R.id.floatingActionButton3);
+        pencapaian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(HomeActivity.this,LihatPencapaianActivity.class);
+                startActivity(intent2);
             }
         });
     }
