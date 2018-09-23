@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mFirebaseAuth;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
         klikGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this,HomeActivity.class);
-//                startActivity(intent);
-                SignIn();
+//                SignIn();
+                Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+                startActivity(intent);
             }
         });
 
