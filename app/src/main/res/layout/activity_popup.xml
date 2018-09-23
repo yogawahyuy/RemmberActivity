@@ -2,8 +2,74 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="350dp"
+    android:layout_height="475dp"
+    android:background="#005792"
+    android:padding="5dp"
+    android:layout_gravity="center"
     tools:context="org.d3ifcool.rememberactivities.PopupActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/popUp_namaKegiatan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kegiatan"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:id="@+id/popUp_jamMulaikegiatan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="jam --:--"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/popUp_jeda"
+                    android:background="#00BBF0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jeda"
+                    android:textSize="16sp"
+                    android:textColor="#FFFFFFFF" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/popUp_tutup"
+                    android:background="#00BBF0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tutup"
+                    android:textSize="16sp"
+                    android:textColor="#FFFFFFFF" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
