@@ -28,8 +28,8 @@ public class HomeActivity extends AppCompatActivity {
         pencapaian.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this,LihatPencapaianActivity.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(HomeActivity.this,LihatPencapaianActivity.class);
+                startActivity(intent2);
             }
         });
     }
