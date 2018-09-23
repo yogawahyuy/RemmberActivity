@@ -21,7 +21,8 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".TambahKegiatanActivity" />
         <activity android:name=".LihatKegiatanActivity" />
-        <activity android:name=".RincianKegiatanActivity"></activity>
+        <activity android:name=".RincianKegiatanActivity" />
+        <activity android:name=".PopupActivity"></activity>
     </application>
 
 </manifest>
