@@ -1,5 +1,6 @@
 package org.d3ifcool.rememberactivities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 
 public class LihatPencapaianActivity extends AppCompatActivity {
 
-    String[] pencapaian= {"Telah melaksanakan rapat", "Telah menjadi Manager", "Programmer", "Guru", " "};
+    String[] pencapaian= {"Telah melaksanakan rapat", "Telah menjadi Manager", "Programmer", "Guru"};
     int[]image ={R.drawable.ceklis,R.drawable.silang};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +20,15 @@ public class LihatPencapaianActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lihat_pencapaian);
 
         ListView listView = (ListView)findViewById(R.id.listView);
+
         CustomAdapter customAdapter = new CustomAdapter();
         listView.setAdapter(customAdapter);
+
+
+
     }
 
-    class CustomAdapter extends BaseAdapter{
-
+    class CustomAdapter extends BaseAdapter {
 
 
         @Override
@@ -44,16 +48,14 @@ public class LihatPencapaianActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-           convertView  = getLayoutInflater().inflate(R.layout.list_item,null);
+            convertView = getLayoutInflater().inflate(R.layout.list_item, null);
 
-            ImageView imageView = (ImageView)convertView.findViewById(R.id.imageView);
-            TextView textView = (TextView)convertView.findViewById(R.id.textView);
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
+            TextView textView = (TextView) convertView.findViewById(R.id.textView);
 
             imageView.setImageResource(image[position]);
             textView.setText(pencapaian[position]);
-            return convertView ;
+            return convertView;
         }
     }
-
-
 }
