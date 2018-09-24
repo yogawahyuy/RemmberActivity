@@ -4,14 +4,14 @@
     android:id="@+id/mainlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#99000000"
+    android:background="@color/colorMain2"
     tools:context="org.d3ifcool.rememberactivities.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="75dp"
-        android:background="@color/colorMain2">
+        >
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
