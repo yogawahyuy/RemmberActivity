@@ -1,8 +1,11 @@
 package org.d3ifcool.rememberactivities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -41,7 +44,14 @@ public class LihatPencapaianActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(LihatPencapaianActivity.this,android.R.layout.simple_list_item_1,list);
         listView.setAdapter(adapter);
-        
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(LihatPencapaianActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 }
