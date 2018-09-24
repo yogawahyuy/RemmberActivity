@@ -1,5 +1,6 @@
 package org.d3ifcool.rememberactivities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.annotation.NonNull;
@@ -8,12 +9,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -27,16 +34,20 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN=9001;
     private static final String TAG="Google Sign";
     private GoogleSignInClient mGoogleSignInClient;
+    private GoogleApiClient googleApiClient;
     private FirebaseAuth mFirebaseAuth;
 
+    ProgressBar progressBar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progressBar=(ProgressBar)findViewById(R.id.pbar);
+        progressBar.setVisibility(View.GONE);
         //Configure Google Sign
-        GoogleSignInOptions gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("703722098218-noomkddl5ot83unieqfuu4qd4n3r0j35.apps.googleusercontent.com")
+        GoogleSignInOptions gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -50,24 +61,30 @@ public class MainActivity extends AppCompatActivity {
         klikGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                SignIn();
-                Intent intent = new Intent(MainActivity.this,HomeActivity.class);
-                startActivity(intent);
+               SignIn();
+
             }
         });
 
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentuser=mFirebaseAuth.getCurrentUser();
-        //updateUI(currentuser);
+        FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
+        updateUI(currentUser);
     }
 
     private void SignIn(){
-        Intent signIntent=mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signIntent,RC_SIGN);
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -77,11 +94,14 @@ public class MainActivity extends AppCompatActivity {
             Task<GoogleSignInAccount>task=GoogleSignIn.getSignedInAccountFromIntent(data);
             try{
                 GoogleSignInAccount account=task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
             }catch (ApiException e){
-                Log.w(TAG, "onActivityResult: ", e);
+                Log.w(TAG, "Google Sign Failed because: ", e);
             }
         }
     }
+
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct){
         Log.d(TAG, "firebaseAuthWithGoogle: "+acct.getId());
 
@@ -94,16 +114,24 @@ public class MainActivity extends AppCompatActivity {
                             //jika sign succes update ui
                             Log.d(TAG, "onComplete: success");
                             FirebaseUser user=mFirebaseAuth.getCurrentUser();
-                           // updateUI(user);
+                            updateUI(user);
+                            progressBar.setVisibility(View.GONE);
                         }else {
                             //jika gagal memunculkan pesan ke user
 
                             Log.w(TAG, "onFailure: ", task.getException() );
                             Snackbar.make(findViewById(R.id.mainlayout),"Login Gagal",Snackbar.LENGTH_LONG).show();
-                           // updateUI(null);
+                            updateUI(null);
                         }
                     }
                 });
     }
-    //yoga comit eaa
+    private void updateUI(FirebaseUser user) {
+
+        if (user != null) {
+            Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 }

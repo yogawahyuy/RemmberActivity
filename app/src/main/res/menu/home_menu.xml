@@ -16,5 +16,10 @@
         android:title="Tentang Kami"
         app:showAsAction="never"
         />
+    <item
+        android:id="@+id/logout"
+        android:title="Keluar akun"
+        app:showAsAction="never"
+        />
 
 </menu>

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "703722098218-rh1nclam1ml84pbasiumb79kok9r0fkf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.d3ifcool.rememberactivities",
+            "certificate_hash": "44bde514a4b3db5fd54df5ac71a0f811585f6b12"
+          }
+        },
+        {
           "client_id": "703722098218-noomkddl5ot83unieqfuu4qd4n3r0j35.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703722098218-noomkddl5ot83unieqfuu4qd4n3r0j35.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
