@@ -2,6 +2,7 @@ package org.d3ifcool.rememberactivities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,10 +10,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class HomeActivity extends AppCompatActivity {
 
     FloatingActionButton tambah;
     FloatingActionButton pencapaian;
+
+    private FirebaseAuth mFirebaseAuth;
+    FirebaseAuth.AuthStateListener mAuthListener;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,15 +38,42 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-      pencapaian = (FloatingActionButton)findViewById(R.id.floatingActionButton3);
+        pencapaian = (FloatingActionButton)findViewById(R.id.floatingActionButton3);
         pencapaian.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-              Intent intent2 = new Intent(HomeActivity.this,LihatPencapaianActivity.class);
-               startActivity(intent2);
+            public void onClick(View v) {
+                Intent intent2 = new Intent(HomeActivity.this,LihatPencapaianActivity.class);
+                startActivity(intent2);
             }
-       });
+        });
+
+        mFirebaseAuth=FirebaseAuth.getInstance();
+
+        mAuthListener=new FirebaseAuth.AuthStateListener(){
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser()==null){
+                    startActivity(new Intent(HomeActivity.this,MainActivity.class));
+                    finish();
+                }
+            }
+        };
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mFirebaseAuth.addAuthStateListener(mAuthListener);
+    }
+
+    //method logout
+    private void signOut() {
+        // Firebase sign out
+        mFirebaseAuth.signOut();
+
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,6 +95,9 @@ public class HomeActivity extends AppCompatActivity {
                 Intent i=new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
+                break;
+            case R.id.logout:
+                signOut();
                 break;
 
 
