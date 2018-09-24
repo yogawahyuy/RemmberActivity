@@ -26,14 +26,14 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        pencapaian = (FloatingActionButton)findViewById(R.id.floatingActionButton3);
+      pencapaian = (FloatingActionButton)findViewById(R.id.floatingActionButton3);
         pencapaian.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent2 = new Intent(HomeActivity.this,LihatPencapaianActivity.class);
-                startActivity(intent2);
+            public void onClick(View view) {
+              Intent intent2 = new Intent(HomeActivity.this,LihatPencapaianActivity.class);
+               startActivity(intent2);
             }
-        });
+       });
     }
 
     @Override

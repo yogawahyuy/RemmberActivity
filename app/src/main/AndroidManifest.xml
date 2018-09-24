@@ -19,10 +19,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".HomeActivity" />
-        <activity android:name=".TambahKegiatanActivity" />
+        <activity android:name=".TambahKegiatanActivity"
+            android:label="Tambah Kegiatan"/>
         <activity android:name=".LihatKegiatanActivity" />
         <activity android:name=".RincianKegiatanActivity" />
-        <activity android:name=".PopupActivity"></activity>
+        <activity android:name=".PopupActivity" />
+        <activity android:name=".TentangKamiActivity"
+            android:label="Tentang Kami"/>
+        <activity android:name=".LihatPencapaianActivity"
+            android:label="Lihat Pencapaian">
+
+        </activity>
     </application>
 
 </manifest>
