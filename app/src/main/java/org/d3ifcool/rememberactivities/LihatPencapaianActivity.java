@@ -47,7 +47,7 @@ public class LihatPencapaianActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(LihatPencapaianActivity.this, MainActivity.class);
+                Intent intent = new Intent(LihatPencapaianActivity.this,PencapainDetailActivity.class);
                 startActivity(intent);
             }
         });
