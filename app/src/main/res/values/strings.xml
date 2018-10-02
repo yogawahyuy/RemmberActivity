@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">RememberActivities</string>
     <string name="klik_di_sini">Klik Disini</string>
     <string name="masuk_dengan_akun_google">Masuk dengan Akun Google</string>
@@ -8,6 +8,7 @@
     <string name="remember_activities">Remember Activities</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_pencapain_detail">Detail Pencapaian</string>
+    <string name="order_summary_email_subject">Intent Email<xliff:g id="name" example="Amy">%s</xliff:g></string>
 
 
 </resources>

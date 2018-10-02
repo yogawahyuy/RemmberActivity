@@ -1,6 +1,8 @@
 package org.d3ifcool.rememberactivities;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +23,18 @@ public class LihatPencapaianActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lihat_pencapaian);
 
         ListView listView = (ListView) findViewById(R.id.list_view);
+
+        FloatingActionButton fabEmail = (FloatingActionButton)findViewById(R.id.fab);
+
+        fabEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:"));
+                intent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.order_summary_email_subject,getPackageName()));
+                intent.putExtra(Intent.EXTRA_TEXT,getPackageName());
+            }
+        });
 
 //        AdapterPencapaian customAdapter = new AdapterPencapaian();
 //        listView.setAdapter(customAdapter);
