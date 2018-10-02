@@ -8,6 +8,8 @@
     <string name="remember_activities">Remember Activities</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_pencapain_detail">Detail Pencapaian</string>
+    <string name="tambah_kegiatan">Tambah Kegiatan</string>
+    <string name="edit_kegiatan">Edit Kegiatan</string>
 
 
 </resources>
