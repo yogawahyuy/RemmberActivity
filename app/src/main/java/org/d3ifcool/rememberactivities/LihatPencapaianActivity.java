@@ -31,7 +31,7 @@ public class LihatPencapaianActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:"));
-                intent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.order_summary_email_subject,getPackageName()));
+                intent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.order,getPackageName()));
                 intent.putExtra(Intent.EXTRA_TEXT,getPackageName());
             }
         });
