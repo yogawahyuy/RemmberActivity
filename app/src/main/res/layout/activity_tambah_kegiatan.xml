@@ -15,6 +15,7 @@
         android:textSize="14sp"/>
 
     <EditText
+        android:id="@+id/namaKegiatan"
         android:inputType="text"
         android:paddingTop="16dp"
         android:layout_width="match_parent"
@@ -26,6 +27,7 @@
         android:textSize="14sp"/>
 
     <EditText
+        android:id="@+id/tanggalKegiatan"
         android:paddingTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -36,6 +38,7 @@
         android:textSize="14sp"/>
 
     <EditText
+        android:id="@+id/jamMulai"
         android:paddingTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -46,6 +49,7 @@
         android:textSize="14sp"/>
 
     <EditText
+        android:id="@+id/jamBerakhir"
         android:paddingTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -56,6 +60,7 @@
         android:textSize="14sp"/>
 
     <EditText
+        android:id="@+id/tempat"
         android:inputType="text"
         android:paddingTop="16dp"
         android:layout_width="match_parent"
@@ -67,6 +72,7 @@
         android:textSize="14sp"/>
 
     <EditText
+        android:id="@+id/catatan"
         android:paddingTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

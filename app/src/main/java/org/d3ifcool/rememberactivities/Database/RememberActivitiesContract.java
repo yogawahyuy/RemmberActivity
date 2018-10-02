@@ -25,12 +25,12 @@ public class RememberActivitiesContract {
         public static final String NAME = "nama_kgt";
         public static final String tgl_mulai = "tgl_mulai";
         public static final String jam_mulai = "jam_mulai";
-        public static final String tgl_berakhir = "tgl_berakhir";
+        public static final String tempat = "tempat";
         public static final String jam_berakhir = "jam_berakhir";
         public static final String catatan = "catatan";
         public static final String status="keterangan";
         public static final String create_table = "CREATE TABLE " + Table_Name + " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME + " VARCHAR(50), " +
-                tgl_mulai + " TEXT, " + jam_mulai + " TEXT, " + tgl_berakhir + " TEXT, " + jam_berakhir + " TEXT, "  +
+                tgl_mulai + " TEXT, " + jam_mulai + " TEXT, " + tempat + " TEXT, " + jam_berakhir + " TEXT, "  +
                 catatan + " TEXT)";
         public static final String DROP_TABLE = "DROP TABLE IF EXISTS" + Table_Name;
     }

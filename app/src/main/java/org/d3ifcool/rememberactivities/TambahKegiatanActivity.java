@@ -1,111 +1,148 @@
 package org.d3ifcool.rememberactivities;
 
+import android.app.AlarmManager;
+import android.app.DatePickerDialog;
+import android.app.LoaderManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TimePicker;
+
+import org.d3ifcool.rememberactivities.Alarm.AlarmRecivier;
+import org.d3ifcool.rememberactivities.Database.DBHelper;
+import org.d3ifcool.rememberactivities.Database.RememberActivitiesContract;
+
+import java.util.Calendar;
 
 
-
-
-public class TambahKegiatanActivity extends AppCompatActivity {
-    /*  private static final int EXISTING_LOADER=0;
+public class TambahKegiatanActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int EXISTING_LOADER = 0;
     private Uri mCurrentUri;
-    private boolean hasChanged=false;
-    private View.OnTouchListener mtouchlistener=new View.OnTouchListener() {
+    private boolean hasChanged = false;
+    private View.OnTouchListener mtouchlistener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            hasChanged=true;
+            hasChanged = true;
             return false;
         }
     };
-    EditText namakegiatan,date,time,datedone,timedone,catatan;
-    DatePickerDialog datePickerDialog,datePickerDialogdone;
+
+    EditText namaKgt, tglKgt, jamMulai, jamBrakhir, tempat, catatan;
+    DatePickerDialog datePickerDialog, datePickerDialogdone;
     final static int RQS_1 = 1;
-    String namaAktivitas;
-    int tahun,bulan,hari;
-    int tahunselesai,bulanselesai,hariselesai;
-    myDBHelper helper;
-    newMydbHelper newMydbHelper;
-    int mYear,mMonth,mDay;
-    String status;*/
+    String namakegiatan, tanggalkegiatan, jamMulaiKgt, jamBerakhirKgt, tempatKgt, catatanKgt;
+    int tahun, bulan, hari;
+    int tahunselesai, bulanselesai, hariselesai;
+    DBHelper newMydbHelper;
+    int mYear, mMonth, mDay;
+    String status;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tambah_kegiatan);
         //dibawah ini adalah inisialisasi semua komponen
-        /*  Intent intent=getIntent();
+        Intent intent = getIntent();
         //disini untuk database
-        mCurrentUri=intent.getData();
-        if (mCurrentUri==null){
+        mCurrentUri = intent.getData();
+        if (mCurrentUri == null) {
             setTitle(R.string.tambah_kegiatan);
             invalidateOptionsMenu();
-        }else {
+        } else {
             setTitle(R.string.edit_kegiatan);
-            getLoaderManager().initLoader(EXISTING_LOADER,null,this);
+            getLoaderManager().initLoader(EXISTING_LOADER, null, this);
         }
-        newMydbHelper=new newMydbHelper(this);
+        newMydbHelper = new DBHelper(this);
         //inisialisasi tampilan
-        namakegiatan = findViewById(R.id.activitiename);
-        date =(EditText)findViewById(R.id.date);
-        datedone =(EditText)findViewById(R.id.datedone);
-        timedone=(EditText)findViewById(R.id.timedone);
-        catatan = findViewById(R.id.note);
-        time=(EditText)findViewById(R.id.timee);
-        datebeginshow();
-        timebeginshow(false);
-        datedoneshow();
-        timedoneshow();
-        helper=new myDBHelper(this);
-        namakegiatan.setOnTouchListener(mtouchlistener);
-        date.setOnTouchListener(mtouchlistener);
-        time.setOnTouchListener(mtouchlistener);
-        datedone.setOnTouchListener(mtouchlistener);
-        timedone.setOnTouchListener(mtouchlistener);
-        catatan.setOnTouchListener(mtouchlistener);
-        */
+        namaKgt = findViewById(R.id.namaKegiatan);
+        tglKgt = findViewById(R.id.tanggalKegiatan);
+        jamMulai = findViewById(R.id.jamMulai);
+        jamBrakhir = findViewById(R.id.jamBerakhir);
+        tempat = findViewById(R.id.tempat);
+        catatan = findViewById(R.id.catatan);
+
+        //untuk on click listener
+        tglKgt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tanggalKegiatan();
+            }
+        });
+        jamMulai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setjamMulai(false);
+            }
+        });
+        jamBrakhir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setjamBerakhir();
+            }
+        });
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_tambah_kegiatan,menu);
-        return true;
-    }
+
+
     //dibawah ini adalah algoritma tambah kegiatan nama method "Add Data"
-    /*
-    private void addData(){
-        namaAktivitas = namakegiatan.getText().toString();
-        String note=catatan.getText().toString();
-        String tglmulai=date.getText().toString();
-        String jammulai=time.getText().toString();
-        String tglberakhir=datedone.getText().toString();
-        String jamberakhir=timedone.getText().toString();
-        if (mCurrentUri==null&& TextUtils.isEmpty(namaAktivitas)&&TextUtils.isEmpty(tglmulai)&&TextUtils.isEmpty(jammulai)&&TextUtils.isEmpty(tglberakhir)&&TextUtils.isEmpty(jamberakhir)){
+
+    private void addData() {
+        namakegiatan = namaKgt.getText().toString();
+        tanggalkegiatan = tglKgt.getText().toString();
+        jamMulaiKgt = jamMulai.getText().toString();
+        jamBerakhirKgt = jamBrakhir.getText().toString();
+        tempatKgt = tempat.getText().toString();
+        catatanKgt = catatan.getText().toString();
+        if (mCurrentUri == null && TextUtils.isEmpty(namakegiatan) && TextUtils.isEmpty(tanggalkegiatan) && TextUtils.isEmpty(jamMulaiKgt) && TextUtils.isEmpty(jamBerakhirKgt)) {
             return;
         }
-        if (namaAktivitas.isEmpty()||tglmulai.isEmpty()||jammulai.isEmpty()||tglberakhir.isEmpty()||jamberakhir.isEmpty()){
+        if (namakegiatan.isEmpty()||tanggalkegiatan.isEmpty()||jamMulaiKgt.isEmpty()||jamBerakhirKgt.isEmpty()){
             Message.message(getApplicationContext(),"Tolong isi semua field");
         }else {
-                if (TextUtils.isEmpty(note)){
-                    note="Anda Tidak Memasukan Catatan";
+                if (TextUtils.isEmpty(catatanKgt)){
+                    catatanKgt="Anda Tidak Memasukan Catatan";
                     status="tercapai";
-                }else if (!TextUtils.isEmpty(note)){
+                }else if (!TextUtils.isEmpty(catatanKgt)){
                     status="Belum Tercapai";
                 }
 
                 ContentValues values=new ContentValues();
-                values.put(myContract.myContractEntry.NAME,namaAktivitas);
-                values.put(myContract.myContractEntry.tgl_mulai,tglmulai);
-                values.put(myContract.myContractEntry.jam_mulai,jammulai);
-                values.put(myContract.myContractEntry.tgl_berakhir,tglberakhir);
-                values.put(myContract.myContractEntry.jam_berakhir,jamberakhir);
-                values.put(myContract.myContractEntry.catatan,note);
+                values.put(RememberActivitiesContract.myContractEntry.NAME,namakegiatan);
+                values.put(RememberActivitiesContract.myContractEntry.tgl_mulai,tanggalkegiatan);
+                values.put(RememberActivitiesContract.myContractEntry.jam_mulai,jamMulaiKgt);
+                values.put(RememberActivitiesContract.myContractEntry.jam_berakhir,jamBerakhirKgt);
+                values.put(RememberActivitiesContract.myContractEntry.tempat,tempatKgt);
+                values.put(RememberActivitiesContract.myContractEntry.catatan,catatanKgt);
                 if (mCurrentUri==null){
-                    Uri newUri=getContentResolver().insert(myContract.myContractEntry.CONTENT_URI,values);
+                    Uri newUri=getContentResolver().insert(RememberActivitiesContract.myContractEntry.CONTENT_URI,values);
                     if (newUri==null){
                         Message.message(this,"Gagal Menyimpan Kegiatan");
                     }else {
                         Message.message(this,"Berhasil Menyimpan Kegiatan");
-                        startActivity(new Intent(detailingActivity.this,seeActivity.class));
+                        startActivity(new Intent(TambahKegiatanActivity.this,LihatKegiatanActivity.class));
                     }
                 }else{
                     int rowsAffected=getContentResolver().update(mCurrentUri,values,null,null);
@@ -113,53 +150,40 @@ public class TambahKegiatanActivity extends AppCompatActivity {
                         Message.message(this,"Gagal Memperbaharui Kegiatan");
                     }else {
                         Message.message(this,"Berhasil Memperbaharui Kegiatan");
-                        startActivity(new Intent(detailingActivity.this,seeActivity.class));
+                        startActivity(new Intent(TambahKegiatanActivity.this,LihatKegiatanActivity.class));
                     }
                 }
         }
     }
-    */
+//    */
 
-    //dibawah ini adalah algoritma untuk menampilkan notifikasi
-    /*
-    *  public void notifTemplate(String tittle, String message) {
-        final Intent intent = new Intent(detailingActivity.this,seeActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(detailingActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder mBuilder = (NotificationCompat.Builder)new NotificationCompat.Builder(detailingActivity.this).
-                setSmallIcon(R.mipmap.ic_launcher_foregrou).setContentTitle(tittle).setContentText(message).setContentIntent(pendingIntent)
+        //dibawah ini adalah algoritma untuk menampilkan notifikasi
+
+      public void notifTemplate(String tittle, String message) {
+        final Intent intent = new Intent(TambahKegiatanActivity.this,LihatKegiatanActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(TambahKegiatanActivity.this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder mBuilder = (NotificationCompat.Builder)new NotificationCompat.Builder(TambahKegiatanActivity.this).
+                setSmallIcon(R.mipmap.ic_launcher).setContentTitle(tittle).setContentText(message).setContentIntent(pendingIntent)
                 .setAutoCancel(true).setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND | Notification.FLAG_AUTO_CANCEL);
         NotificationManager notificationManager =
-                (NotificationManager)detailingActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager)TambahKegiatanActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1,mBuilder.build());
-    }*/
-
-    //dibawah ini adalah algoritma untuk menu ditoolbar
-    /*
-    *   @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_detailing,menu);
-        return true;
     }
+
+        //dibawah ini adalah algoritma untuk menu ditoolbar
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            getMenuInflater().inflate(R.menu.menu_tambah_kegiatan, menu);
+            return true;
+        }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
-            case R.id.save_data:
+            case R.id.save:
                 addData();
                 notifTemplate("Remember Activities","Kegiatan Berhasil Ditambah");
-            case android.R.id.home:
-                if (hasChanged){
-                    NavUtils.navigateUpFromSameTask(detailingActivity.this);
-                    return true;
-                }
-                DialogInterface.OnClickListener discardButtonClickListene=new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        NavUtils.navigateUpFromSameTask(detailingActivity.this);
-                    }
-                };
-                showUnsaveDialog(discardButtonClickListene);
                 return true;
 
         }
@@ -182,11 +206,11 @@ public class TambahKegiatanActivity extends AppCompatActivity {
         };
         showUnsaveDialog(discardButtonClickListene);
 
-    }*/
+    }
 
-    //dibawah adalah algoritma untuk mencegah user keluar dari pengisian form jika form belum selesai terisi
+        //dibawah adalah algoritma untuk mencegah user keluar dari pengisian form jika form belum selesai terisi
 
-    /*  private void showUnsaveDialog(DialogInterface.OnClickListener discard){
+      private void showUnsaveDialog(DialogInterface.OnClickListener discard){
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setMessage("Buang perubahan Anda dan keluar dari pengeditan?");
         builder.setPositiveButton("Buang",discard);
@@ -201,23 +225,23 @@ public class TambahKegiatanActivity extends AppCompatActivity {
         AlertDialog alertDialog=builder.create();
         alertDialog.show();
 
-    } */
+    }
 
-    //dibawah ini algoritma untuk menampilkan tanggal dan jam
+        //dibawah ini algoritma untuk menampilkan tanggal dan jam
 
-    /*  private void datebeginshow(){
+      private void tanggalKegiatan(){
 
-        date.setOnClickListener(new View.OnClickListener() {
+        tglKgt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final Calendar c= Calendar.getInstance();
                  mYear=c.get(Calendar.YEAR);
                  mMonth=c.get(Calendar.MONTH);
                  mDay=c.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog=new DatePickerDialog(detailingActivity.this, new DatePickerDialog.OnDateSetListener() {
+                datePickerDialog=new DatePickerDialog(TambahKegiatanActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        date.setText(year+"-"+(month+1)+"-"+day);
+                        tglKgt.setText(year+"-"+(month+1)+"-"+day);
                         tahun=year;
                         bulan=month;
                         hari=day;
@@ -228,38 +252,16 @@ public class TambahKegiatanActivity extends AppCompatActivity {
         });
 
     }
-    private void datedoneshow(){
+    private void setjamMulai(boolean is24){
 
-        datedone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Calendar c= Calendar.getInstance();
-                int mYear=c.get(Calendar.YEAR);
-                int mMont=c.get(Calendar.MONTH);
-                int mDay=c.get(Calendar.DAY_OF_MONTH);
-                datePickerDialogdone=new DatePickerDialog(detailingActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        datedone.setText(year+"-"+(month+1)+"-"+day);
-                        tahunselesai=year;
-                        bulanselesai=month;
-                        hariselesai=day;
-                    }
-                },mYear,mMont,mDay);
-                datePickerDialogdone.show();
-            }
-        });
-    }
-    private void timebeginshow(boolean is24){
-
-        time.setOnClickListener(new View.OnClickListener() {
+        jamMulai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar mCurentTime=Calendar.getInstance();
                 final int hour=mCurentTime.get(Calendar.HOUR_OF_DAY);
                 final int minute=mCurentTime.get(Calendar.MINUTE);
                 TimePickerDialog mtimepicker;
-               mtimepicker=new TimePickerDialog(detailingActivity.this,onTimeSetListener,hour,minute,true);
+               mtimepicker=new TimePickerDialog(TambahKegiatanActivity.this,onTimeSetListener,hour,minute,true);
                 mtimepicker.setTitle("Pilih waktu Mulai");
                 mtimepicker.show();
             }
@@ -270,7 +272,7 @@ public class TambahKegiatanActivity extends AppCompatActivity {
     TimePickerDialog.OnTimeSetListener onTimeSetListener=new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker timePicker, int i, int i1) {
-            time.setText(i+":"+i1);
+            jamMulai.setText(i+":"+i1);
             Calendar calNow = Calendar.getInstance();
             Calendar calSet = (Calendar) calNow.clone();
             calSet.set(tahun,bulan,hari);
@@ -288,16 +290,16 @@ public class TambahKegiatanActivity extends AppCompatActivity {
 
         }
     };
-     private void timedoneshow(){
+     private void setjamBerakhir(){
 
-        timedone.setOnClickListener(new View.OnClickListener() {
+        jamBrakhir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar mCurentTime=Calendar.getInstance();
                 int hour=mCurentTime.get(Calendar.HOUR_OF_DAY);
                 int minute=mCurentTime.get(Calendar.MINUTE);
                 TimePickerDialog mtimepickerdone;
-                mtimepickerdone=new TimePickerDialog(detailingActivity.this,onTimeSetListenerone,hour,minute,true);
+                mtimepickerdone=new TimePickerDialog(TambahKegiatanActivity.this,onTimeSetListenerone,hour,minute,true);
                 mtimepickerdone.setTitle("Select Time");
                 mtimepickerdone.show();
             }
@@ -306,7 +308,7 @@ public class TambahKegiatanActivity extends AppCompatActivity {
     TimePickerDialog.OnTimeSetListener onTimeSetListenerone=new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker timePicker, int i, int i1) {
-            timedone.setText(i+":"+i1);
+            jamBrakhir.setText(i+":"+i1);
             Calendar calNow = Calendar.getInstance();
             Calendar calSet = (Calendar) calNow.clone();
             calSet.set(tahunselesai,bulanselesai,hariselesai);
@@ -325,27 +327,27 @@ public class TambahKegiatanActivity extends AppCompatActivity {
         }
     };
 
-    */
 
-    //disini terdapat algoritma untuk menambahkan alaram
-    /*  private void setAlarm(Calendar target){
+
+        //disini terdapat algoritma untuk menambahkan alaram
+      private void setAlarm(Calendar target){
         Cursor cursor;
         SQLiteDatabase db=newMydbHelper.getReadableDatabase();
         try{
-            String query="Select _id from "+myContract.myContractEntry.Table_Name;
+            String query="Select _id from "+RememberActivitiesContract.myContractEntry.Table_Name;
             cursor=db.rawQuery(query,null);
             if (cursor.getCount()==0) {
                 int id=1;
-                Uri CurrentUri= ContentUris.withAppendedId(myContract.myContractEntry.CONTENT_URI,id);
-                Intent intent = new Intent(getBaseContext(), Alarmrecivier.class);
+                Uri CurrentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
+                Intent intent = new Intent(getBaseContext(), AlarmRecivier.class);
                 intent.setData(CurrentUri);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), RQS_1, intent, 0);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
             }else if(cursor.moveToLast()){
                 int id=cursor.getCount()+1;
-                Uri CurrentUri= ContentUris.withAppendedId(myContract.myContractEntry.CONTENT_URI,id);
-                Intent intent = new Intent(getBaseContext(), Alarmrecivier.class);
+                Uri CurrentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
+                Intent intent = new Intent(getBaseContext(), AlarmRecivier.class);
                 intent.setData(CurrentUri);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), cursor.getCount()+1, intent, 0);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -361,20 +363,20 @@ public class TambahKegiatanActivity extends AppCompatActivity {
         Cursor cursor;
         SQLiteDatabase db=newMydbHelper.getReadableDatabase();
         try{
-            String query="Select _id from "+myContract.myContractEntry.Table_Name;
+            String query="Select _id from "+RememberActivitiesContract.myContractEntry.Table_Name;
             cursor=db.rawQuery(query,null);
             if (cursor.getCount()==0) {
                 int id=1;
-                Uri CurrentUri= ContentUris.withAppendedId(myContract.myContractEntry.CONTENT_URI,id);
-                Intent intent = new Intent(getBaseContext(), AlarmReciviersjamselesai.class);
+                Uri CurrentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
+                Intent intent = new Intent(getBaseContext(), AlarmRecivier.class);
                 intent.setData(CurrentUri);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), RQS_1, intent, 0);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
             }else if(cursor.moveToLast()){
                 int id=cursor.getCount()+1;
-                Uri CurrentUri= ContentUris.withAppendedId(myContract.myContractEntry.CONTENT_URI,id);
-                Intent intent = new Intent(getBaseContext(), AlarmReciviersjamselesai.class);
+                Uri CurrentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
+                Intent intent = new Intent(getBaseContext(), AlarmRecivier.class);
                 intent.setData(CurrentUri);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), cursor.getCount()+100, intent, 0);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -386,20 +388,19 @@ public class TambahKegiatanActivity extends AppCompatActivity {
 
     }
 
-    */
 
-    //disini terdapat algoritma untuk menambah dan mengambil data (untuk edit) kegiatan
-    /*
+
+        //disini terdapat algoritma untuk menambah dan mengambil data (untuk edit) kegiatan
+
        @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String [] projection={
-                myContract.myContractEntry.UID,
-                myContract.myContractEntry.NAME,
-                myContract.myContractEntry.tgl_mulai,
-                myContract.myContractEntry.jam_mulai,
-                myContract.myContractEntry.tgl_berakhir,
-                myContract.myContractEntry.jam_berakhir,
-                myContract.myContractEntry.catatan,
+                RememberActivitiesContract.myContractEntry.UID,
+                RememberActivitiesContract.myContractEntry.NAME,
+                RememberActivitiesContract.myContractEntry.tgl_mulai,
+                RememberActivitiesContract.myContractEntry.jam_mulai,
+                RememberActivitiesContract.myContractEntry.jam_berakhir,
+                RememberActivitiesContract.myContractEntry.catatan,
         };
 
         return new CursorLoader(this,mCurrentUri,projection,null,null,null);
@@ -411,40 +412,35 @@ public class TambahKegiatanActivity extends AppCompatActivity {
             return;
         }
         if (cursor.moveToFirst()) {
-            int nameColumnIndex = cursor.getColumnIndex(myContract.myContractEntry.NAME);
-            int tglmulaiColumnIndex = cursor.getColumnIndex(myContract.myContractEntry.tgl_mulai);
-            int jammulaiColumnIndex = cursor.getColumnIndex(myContract.myContractEntry.jam_mulai);
-            int tglberakhirColumnIndex = cursor.getColumnIndex(myContract.myContractEntry.tgl_berakhir);
-            int jamberakhirColumnIndex = cursor.getColumnIndex(myContract.myContractEntry.jam_berakhir);
-            int catatanColumnIndex = cursor.getColumnIndex(myContract.myContractEntry.catatan);
+            int nameColumnIndex = cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.NAME);
+            int tglmulaiColumnIndex = cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.tgl_mulai);
+            int jammulaiColumnIndex = cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.jam_mulai);
+            int jamberakhirColumnIndex = cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.jam_berakhir);
+            int catatanColumnIndex = cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.catatan);
             String nmkgt = cursor.getString(nameColumnIndex);
             String tglmulai = cursor.getString(tglmulaiColumnIndex);
             String jammulai = cursor.getString(jammulaiColumnIndex);
-            String tglberakhir = cursor.getString(tglberakhirColumnIndex);
             String jamberakhir = cursor.getString(jamberakhirColumnIndex);
 
             String catatannya = cursor.getString(catatanColumnIndex);
 
-            namakegiatan.setText(nmkgt);
-            date.setText(tglmulai);
-            time.setText(jammulai);
-            datedone.setText(tglberakhir);
-            timedone.setText(jamberakhir);
-            catatan.setText(catatannya);
+            namaKgt.setText(namakegiatan);
+            tglKgt.setText(tanggalkegiatan);
+            jamMulai.setText(jamMulaiKgt);
+            jamBrakhir.setText(jamBerakhirKgt);
+            catatan.setText(catatanKgt);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        namakegiatan.setText("");
-        date.setText("");
-        datedone.setText("");
-        timedone.setText("");
-        time.setText("");
+        namaKgt.setText("");
+        tglKgt.setText("");
+        jamMulai.setText("");
+        jamBrakhir.setText("");
         catatan.setText("");
     }
 
 
-    */
+    }
 
-}
