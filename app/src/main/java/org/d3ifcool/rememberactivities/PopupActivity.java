@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import org.d3ifcool.rememberactivities.Database.DBHelper;
 import org.d3ifcool.rememberactivities.Database.RememberActivitiesContract;
+import org.d3ifcool.rememberactivities.Alarm.AlarmRecivier;
 
 import static org.d3ifcool.rememberactivities.TambahKegiatanActivity.RQS_1;
 
