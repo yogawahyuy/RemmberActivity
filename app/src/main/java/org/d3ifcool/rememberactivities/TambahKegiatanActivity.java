@@ -142,7 +142,7 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
                         Message.message(this,"Gagal Menyimpan Kegiatan");
                     }else {
                         Message.message(this,"Berhasil Menyimpan Kegiatan");
-                        startActivity(new Intent(TambahKegiatanActivity.this,LihatKegiatanActivity.class));
+                        //startActivity(new Intent(TambahKegiatanActivity.this,LihatKegiatanActivity.class));
                     }
                 }else{
                     int rowsAffected=getContentResolver().update(mCurrentUri,values,null,null);
@@ -286,7 +286,7 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
             } else {
 
             }
-            setAlarm(calSet);
+          //  setAlarm(calSet);
 
         }
     };
@@ -322,7 +322,7 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
             } else {
 
             }
-            setAlarmselesai(calSet);
+           // setAlarmselesai(calSet);
 
         }
     };
@@ -424,11 +424,11 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
 
             String catatannya = cursor.getString(catatanColumnIndex);
 
-            namaKgt.setText(namakegiatan);
-            tglKgt.setText(tanggalkegiatan);
-            jamMulai.setText(jamMulaiKgt);
-            jamBrakhir.setText(jamBerakhirKgt);
-            catatan.setText(catatanKgt);
+            namaKgt.setText(nmkgt);
+            tglKgt.setText(tglmulai);
+            jamMulai.setText(jammulai);
+            jamBrakhir.setText(jamberakhir);
+            catatan.setText(catatannya);
         }
     }
 

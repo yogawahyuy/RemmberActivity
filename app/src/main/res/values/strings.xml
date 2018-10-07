@@ -10,6 +10,8 @@
     <string name="title_activity_pencapain_detail">Detail Pencapaian</string>
     <string name="tambah_kegiatan">Tambah Kegiatan</string>
     <string name="edit_kegiatan">Edit Kegiatan</string>
+    <string name="tanggal">Tanggal</string>
+    <string name="nama_kegiatan">Nama Kegiatan</string>
 
 
 </resources>
