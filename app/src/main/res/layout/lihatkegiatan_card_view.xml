@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:maxLines="3"
             android:padding="8dp"
-            android:text="@string/nama_kegiatan"
+            android:text="nama kegiatan"
             android:textColor="#222"
             android:textStyle="bold"
             android:textSize="22sp" />
@@ -31,7 +31,7 @@
             android:layout_alignParentTop="true"
             android:maxLines="3"
             android:padding="8dp"
-            android:text="@string/tanggal"
+            android:text="tanggal kegiatan"
             android:textColor="#666"
             android:textSize="14sp" />
 

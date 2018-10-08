@@ -39,9 +39,9 @@ public class AlarmRecivier extends BroadcastReceiver implements LoaderManager.Lo
         notifBuilder=new NotificationCompat.Builder(context);
         mCurentUri=intent.getData();
         intent.setData(mCurentUri);
-        notifikasi.notifTemplate(context,"Remember Activities","Ayo cek kegiatan anda!");
+      //  notifikasi.notifTemplate(context,"Remember Activities","Ayo cek kegiatan anda!");
         Toast.makeText(context, "Alarm aktif!", Toast.LENGTH_LONG).show();
-        player = MediaPlayer.create(context, R.raw.apple_ring);
+//        player = MediaPlayer.create(context, );
         player.start();
         Intent popup=new Intent("android.intent.action.MAIN");
         popup.setClass(context,PopupActivity.class);
@@ -50,30 +50,30 @@ public class AlarmRecivier extends BroadcastReceiver implements LoaderManager.Lo
         context.startActivity(popup);
     }
 
-    private void notifikasi(Context context){
-        Calendar calendar=Calendar.getInstance();
-        int jam=calendar.get(Calendar.HOUR);
-        SQLiteDatabase db=newMydbHelper.getWritableDatabase();
-        Cursor c;
-        String sql="select * from "+ RememberActivitiesContract.myContractEntry.Table_Name+ " where "+RememberActivitiesContract.myContractEntry.jam_mulai+" ='"+jam+"'";
-        c=db.rawQuery(sql,null);
-        try{
-            if (c.moveToFirst()){
-                /*
-                int name=c.getColumnIndex(myContract.myContractEntry.NAME);
-                notifBuilder.setSmallIcon(R.mipmap.ic_launcher_foregrou);
-                notifBuilder.setContentTitle("Rememeber Activities");
-                notifBuilder.setContentText(c.getString(name));
-                Intent intent=new Intent(,detailviewActivity.class);
-
-            */
-                int name=c.getColumnIndex(RememberActivitiesContract.myContractEntry.NAME);
-                notifikasi.notifTemplate(context,"Remember Activities",c.getString(name));
-            }
-        }catch (Exception e){
-            throw new IllegalArgumentException("Gagagl "+e);
-        }
-    }
+//    private void notifikasi(Context context){
+////        Calendar calendar=Calendar.getInstance();
+////        int jam=calendar.get(Calendar.HOUR);
+//        SQLiteDatabase db=newMydbHelper.getWritableDatabase();
+//        Cursor c;
+//        String sql="select * from "+ RememberActivitiesContract.myContractEntry.Table_Name+ " where "+RememberActivitiesContract.myContractEntry.jam_mulai+" ='"+jam+"'";
+//        c=db.rawQuery(sql,null);
+//        try{
+//            if (c.moveToFirst()){
+//                /*
+//                int name=c.getColumnIndex(myContract.myContractEntry.NAME);
+//                notifBuilder.setSmallIcon(R.mipmap.ic_launcher_foregrou);
+//                notifBuilder.setContentTitle("Rememeber Activities");
+//                notifBuilder.setContentText(c.getString(name));
+//                Intent intent=new Intent(,detailviewActivity.class);
+//
+//            */
+//                int name=c.getColumnIndex(RememberActivitiesContract.myContractEntry.NAME);
+//               // notifikasi.notifTemplate(context,"Remember Activities",c.getString(name));
+//            }
+//        }catch (Exception e){
+//            throw new IllegalArgumentException("Gagagl "+e);
+//        }
+//    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -86,16 +86,18 @@ public class AlarmRecivier extends BroadcastReceiver implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor==null||cursor.getCount()<1){
+        if (cursor == null || cursor.getCount() < 1) {
             return;
         }
-        if (cursor.moveToFirst()){RememberActivitiesContract.myContractEntry.UID);
+        if (cursor.moveToFirst()) {
+
             int nameColumnIndex = cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.NAME);
-            String id=cursor.getString(idClumndIndex);
+            // String id=cursor.getString(idClumndIndex);
             String nmkgt = cursor.getString(nameColumnIndex);
-            notifikasi.notifTemplate(context1,"Remember Activities",nmkgt);
+            // notifikasi.notifTemplate(context1,"Remember Activities",nmkgt);
         }
     }
+
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {

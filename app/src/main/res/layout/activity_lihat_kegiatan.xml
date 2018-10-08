@@ -7,26 +7,27 @@
     android:padding="16dp"
     tools:context="org.d3ifcool.rememberactivities.LihatKegiatanActivity">
 
-   <ListView
+   <android.support.v7.widget.RecyclerView
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:id="@+id/listView_kegiatan"/>
-   <!--empty view-->
-   <RelativeLayout
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:id="@+id/emptyview"
-       android:layout_centerInParent="true"
-       >
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:id="@+id/title_emptyview"
-          android:layout_centerHorizontal="true"
-          android:fontFamily="sans-serif-medium"
-          android:paddingTop="16dp"
-          android:text="Kegiatan Masih Kosong"
-          android:textAppearance="?android:textAppearanceMedium"
-          />
-   </RelativeLayout>
+       android:id="@+id/recylce_kegiatan"
+       android:scrollbars="vertical"/>
+   <!--&lt;!&ndash;empty view&ndash;&gt;-->
+   <!--<RelativeLayout-->
+       <!--android:layout_width="wrap_content"-->
+       <!--android:layout_height="wrap_content"-->
+       <!--android:id="@+id/emptyview"-->
+       <!--android:layout_centerInParent="true"-->
+       <!--&gt;-->
+      <!--<TextView-->
+          <!--android:layout_width="wrap_content"-->
+          <!--android:layout_height="wrap_content"-->
+          <!--android:id="@+id/title_emptyview"-->
+          <!--android:layout_centerHorizontal="true"-->
+          <!--android:fontFamily="sans-serif-medium"-->
+          <!--android:paddingTop="16dp"-->
+          <!--android:text="Kegiatan Masih Kosong"-->
+          <!--android:textAppearance="?android:textAppearanceMedium"-->
+          <!--/>-->
+   <!--</RelativeLayout>-->
 </RelativeLayout>

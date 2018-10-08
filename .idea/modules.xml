@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/40-mobpro-4001-rememberactivities.iml" filepath="$PROJECT_DIR$/40-mobpro-4001-rememberactivities.iml" />
-      <module fileurl="file://D:\kuliah\Semester 5\Mobpro Lanjur\Project Rememmber Activities\RememmberActivities\.idea\40-mobpro-4001-rememberactivities.iml" filepath="D:\kuliah\Semester 5\Mobpro Lanjur\Project Rememmber Activities\RememmberActivities\.idea\40-mobpro-4001-rememberactivities.iml" />
       <module fileurl="file://D:\kuliah\Semester 5\Mobpro Lanjur\Project Rememmber Activities\RememmberActivities\40-mobpro-4001-rememberactivities.iml" filepath="D:\kuliah\Semester 5\Mobpro Lanjur\Project Rememmber Activities\RememmberActivities\40-mobpro-4001-rememberactivities.iml" />
-      <module fileurl="file://F:\kuliah\RA\40-mobpro-4001-rememberactivities\RememmberActivities.iml" filepath="F:\kuliah\RA\40-mobpro-4001-rememberactivities\RememmberActivities.iml" />
+      <module fileurl="file://D:\kuliah\Semester 5\Mobpro Lanjur\Project Rememmber Activities\RememmberActivities\.idea\40-mobpro-4001-rememberactivities.iml" filepath="D:\kuliah\Semester 5\Mobpro Lanjur\Project Rememmber Activities\RememmberActivities\.idea\40-mobpro-4001-rememberactivities.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RememmberActivities.iml" filepath="$PROJECT_DIR$/RememmberActivities.iml" />
       <module fileurl="file://F:\RememberActivites\40-mobpro-4001-rememberactivities\RememmberActivities.iml" filepath="F:\RememberActivites\40-mobpro-4001-rememberactivities\RememmberActivities.iml" />
+      <module fileurl="file://F:\kuliah\RA\40-mobpro-4001-rememberactivities\RememmberActivities.iml" filepath="F:\kuliah\RA\40-mobpro-4001-rememberactivities\RememmberActivities.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

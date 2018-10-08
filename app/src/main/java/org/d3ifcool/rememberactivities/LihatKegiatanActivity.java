@@ -11,41 +11,88 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.d3ifcool.rememberactivities.Adapter.AdapterLihatKegiatan;
 import org.d3ifcool.rememberactivities.Database.RememberActivitiesContract;
+import org.d3ifcool.rememberactivities.Model.Kegiatan;
+
+import java.util.ArrayList;
 
 public class LihatKegiatanActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final  int MY_LOADER=0;
     private AdapterLihatKegiatan mCursorAdapter;
 
+    private DatabaseReference database;
+    private RecyclerView rvView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<Kegiatan> daftarKegiatan;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lihat_kegiatan);
-        ListView lis=(ListView)findViewById(R.id.listView_kegiatan);
-        mCursorAdapter=new AdapterLihatKegiatan(this,null);
-        View emptyView=findViewById(R.id.emptyview);
-        lis.setEmptyView(emptyView);
-        mCursorAdapter=new AdapterLihatKegiatan(this,null);
-        lis.setAdapter(mCursorAdapter);
-        lis.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //inisialisasi recyle view dan komponen
+
+        rvView=(RecyclerView)findViewById(R.id.recylce_kegiatan);
+        rvView.setHasFixedSize(true);
+        layoutManager=new LinearLayoutManager(this);
+        rvView.setLayoutManager(layoutManager);
+
+
+        //database
+        database= FirebaseDatabase.getInstance().getReference();
+
+        //mengambil data
+        database.child("Kegiatan").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent=new Intent(LihatKegiatanActivity.this,RincianKegiatanActivity.class);
-                Uri currentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
-                intent.setData(currentUri);
-                startActivity(intent);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                daftarKegiatan=new ArrayList<>();
+                for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()){
+                    Kegiatan kegiatan=noteDataSnapshot.getValue(Kegiatan.class);
+                    kegiatan.setKey(noteDataSnapshot.getKey());
+                    daftarKegiatan.add(kegiatan);
+                }
+                adapter=new AdapterLihatKegiatan(daftarKegiatan,LihatKegiatanActivity.this);
+                rvView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("Lihat kegiatan", "onCancelled: "+databaseError);
             }
         });
 
-
-        getLoaderManager().initLoader(MY_LOADER,null,this);
+//        ListView lis=(ListView)findViewById(R.id.listView_kegiatan);
+//        mCursorAdapter=new AdapterLihatKegiatan(this,null);
+//        View emptyView=findViewById(R.id.emptyview);
+//        lis.setEmptyView(emptyView);
+//        mCursorAdapter=new AdapterLihatKegiatan(this,null);
+//        lis.setAdapter(mCursorAdapter);
+//        lis.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent=new Intent(LihatKegiatanActivity.this,RincianKegiatanActivity.class);
+//                Uri currentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
+//                intent.setData(currentUri);
+//                startActivity(intent);
+//            }
+//        });
+//
+//
+//        getLoaderManager().initLoader(MY_LOADER,null,this);
     }
 
 
@@ -62,12 +109,12 @@ public class LihatKegiatanActivity extends AppCompatActivity implements LoaderMa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mCursorAdapter.swapCursor(data);
+        //mCursorAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mCursorAdapter.swapCursor(null);
+        //mCursorAdapter.swapCursor(null);
     }
 
     private class viewAdapter extends BaseAdapter{

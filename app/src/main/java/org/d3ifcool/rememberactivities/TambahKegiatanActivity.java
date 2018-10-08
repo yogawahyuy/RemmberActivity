@@ -17,6 +17,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,13 @@ import android.widget.TimePicker;
 import org.d3ifcool.rememberactivities.Alarm.AlarmRecivier;
 import org.d3ifcool.rememberactivities.Database.DBHelper;
 import org.d3ifcool.rememberactivities.Database.RememberActivitiesContract;
+import org.d3ifcool.rememberactivities.Model.Kegiatan;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
@@ -58,6 +66,8 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
     DBHelper newMydbHelper;
     int mYear, mMonth, mDay;
     String status;
+    private DatabaseReference database;
+    private FirebaseUser mfirebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +76,8 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
         //dibawah ini adalah inisialisasi semua komponen
         Intent intent = getIntent();
         //disini untuk database
+        database=FirebaseDatabase.getInstance().getReference();
+        mfirebaseUser=FirebaseAuth.getInstance().getCurrentUser();
         mCurrentUri = intent.getData();
         if (mCurrentUri == null) {
             setTitle(R.string.tambah_kegiatan);
@@ -105,6 +117,40 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
 
     }
 
+    //cek jika ada field yang kosong
+    private boolean isEmpty(String s){
+        return TextUtils.isEmpty(s);
+    }
+
+    private void tambahData(){
+        //get email
+        String email=mfirebaseUser.getEmail();
+        if (!isEmpty(namaKgt.getText().toString())&& !isEmpty(tglKgt.getText().toString()) && !isEmpty(jamMulai.getText().toString()) && !isEmpty(jamBrakhir.getText().toString())) {
+            if (isEmpty(catatan.getText().toString())) {
+                String tempCatat = "Anda Tidak memasukan Catatan";
+                submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(), tempCatat, email));
+
+            } else {
+                submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(),catatan.getText().toString(),email));
+            }
+        }else{
+            Message.message(this,"Terdapat Field yang Kosong");
+        }
+    }
+
+    private void submitKegiatan(Kegiatan kegiatan){
+        database.child("Kegiatan").push().setValue(kegiatan).addOnSuccessListener(this, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Message.message(getApplicationContext(),"Berhasil Menyimpan Kegiatan");
+                startActivity(new Intent(TambahKegiatanActivity.this,LihatKegiatanActivity.class));
+            }
+        });
+
+    }
+
+
+
 
 
     //dibawah ini adalah algoritma tambah kegiatan nama method "Add Data"
@@ -142,7 +188,7 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
                         Message.message(this,"Gagal Menyimpan Kegiatan");
                     }else {
                         Message.message(this,"Berhasil Menyimpan Kegiatan");
-                        //startActivity(new Intent(TambahKegiatanActivity.this,LihatKegiatanActivity.class));
+                        startActivity(new Intent(TambahKegiatanActivity.this,LihatKegiatanActivity.class));
                     }
                 }else{
                     int rowsAffected=getContentResolver().update(mCurrentUri,values,null,null);
@@ -182,7 +228,7 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
 
         switch (item.getItemId()){
             case R.id.save:
-                addData();
+                tambahData();
                 notifTemplate("Remember Activities","Kegiatan Berhasil Ditambah");
                 return true;
 

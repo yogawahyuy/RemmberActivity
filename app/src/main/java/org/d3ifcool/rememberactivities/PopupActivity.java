@@ -118,31 +118,31 @@ public class PopupActivity extends AppCompatActivity implements LoaderManager.Lo
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void setAlarm(Calendar target){
-        Cursor cursor;
-        SQLiteDatabase db= DBHelper.getReadableDatabase();
-        try{
-            String query="Select _id from "+RememberActivitiesContract.myContractEntry.Table_Name;
-            cursor=db.rawQuery(query,null);
-            if (cursor.getCount()==0) {
-                int id=1;
-                Uri CurrentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
-                Intent intent = new Intent(getBaseContext(), Alarmrecivier.class);
-                intent.setData(CurrentUri);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), RQS_1, intent, 0);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
-            }else if(cursor.moveToLast()){
-                int id=cursor.getCount()+2;
-                Uri CurrentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
-                Intent intent = new Intent(getBaseContext(), Alarmrecivier.class);
-                intent.setData(CurrentUri);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), cursor.getCount()+200, intent, 0);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
-            }
-        }catch (Exception e){
-
-        }
+//        Cursor cursor;
+//        SQLiteDatabase db= DBHelper.getReadableDatabase();
+//        try{
+//            String query="Select _id from "+RememberActivitiesContract.myContractEntry.Table_Name;
+//            cursor=db.rawQuery(query,null);
+//            if (cursor.getCount()==0) {
+//                int id=1;
+//                Uri CurrentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
+//                Intent intent = new Intent(getBaseContext(), Alarmrecivier.class);
+//                intent.setData(CurrentUri);
+//                PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), RQS_1, intent, 0);
+//                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//                alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
+//            }else if(cursor.moveToLast()){
+//                int id=cursor.getCount()+2;
+//                Uri CurrentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
+//                Intent intent = new Intent(getBaseContext(), Alarmrecivier.class);
+//                intent.setData(CurrentUri);
+//                PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), cursor.getCount()+200, intent, 0);
+//                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//                alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
+//            }
+//        }catch (Exception e){
+//
+//        }
 
     }
 }
