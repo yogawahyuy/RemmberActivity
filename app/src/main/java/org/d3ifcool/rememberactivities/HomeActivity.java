@@ -96,6 +96,9 @@ public class HomeActivity extends AppCompatActivity {
                 i.setData(Uri.parse(url));
                 startActivity(i);
                 break;
+            case R.id.profil:
+                startActivity(new Intent(HomeActivity.this, TentangKamiActivity.class));
+                break;
             case R.id.logout:
                 signOut();
                 break;
