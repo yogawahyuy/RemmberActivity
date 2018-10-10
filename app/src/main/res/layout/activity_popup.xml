@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
     android:layout_height="475dp"
-    android:background="@color/colorMain2"
     android:padding="5dp"
     android:layout_gravity="center"
     tools:context="org.d3ifcool.rememberactivities.PopupActivity">

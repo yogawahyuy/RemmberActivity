@@ -4,7 +4,6 @@
     android:id="@+id/mainlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorMain2"
     tools:context="org.d3ifcool.rememberactivities.MainActivity">
 
     <RelativeLayout
