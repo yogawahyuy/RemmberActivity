@@ -21,18 +21,25 @@ import java.util.ArrayList;
  */
 
 public class AdapterLihatKegiatan extends RecyclerView.Adapter<AdapterLihatKegiatan.ViewHolder> {
-
+    public ClickHandler clickHandler;
     private ArrayList<Kegiatan> daftarKegiatan;
     private Context context;
+    private ArrayList<Integer> mSelectedId;
 
-    public AdapterLihatKegiatan(ArrayList<Kegiatan> kegiatans,Context ctx){
+    public interface ClickHandler{
+        void onItemClick(int posisi);
+    }
+
+    public AdapterLihatKegiatan(ArrayList<Kegiatan> kegiatans,Context ctx,ClickHandler handler){
         daftarKegiatan=kegiatans;
         context=ctx;
+        clickHandler=handler;
+        mSelectedId=new ArrayList<>();
     }
 
 
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView jam,nama,tgl;
 
         public ViewHolder(View itemView) {
@@ -40,6 +47,14 @@ public class AdapterLihatKegiatan extends RecyclerView.Adapter<AdapterLihatKegia
             jam=itemView.findViewById(R.id.waktu_mulai);
             nama=itemView.findViewById(R.id.custom_namaKgt);
             tgl=itemView.findViewById(R.id.custom_tglKgt);
+
+            itemView.setFocusable(true);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            clickHandler.onItemClick(getAdapterPosition());
         }
     }
 
@@ -57,47 +72,10 @@ public class AdapterLihatKegiatan extends RecyclerView.Adapter<AdapterLihatKegia
         final String nama=daftarKegiatan.get(position).getNamaKegiatan();
         final String tgl=daftarKegiatan.get(position).getTglKegiatan();
 
-        holder.tgl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        holder.jam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        holder.nama.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        holder.nama.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return false;
-            }
-        });
-        holder.jam.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return false;
-            }
-        });
-        holder.tgl.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return false;
-            }
-        });
-
         holder.tgl.setText(tgl);
         holder.jam.setText(jam);
         holder.nama.setText(nama);
+        holder.itemView.setSelected(mSelectedId.contains(position));
     }
 
     @Override

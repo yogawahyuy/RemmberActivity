@@ -68,6 +68,7 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
     String status;
     private DatabaseReference database;
     private FirebaseUser mfirebaseUser;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +77,9 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
         //dibawah ini adalah inisialisasi semua komponen
         Intent intent = getIntent();
         //disini untuk database
-        database=FirebaseDatabase.getInstance().getReference();
+        database=FirebaseDatabase.getInstance().getReference("Kegiatan");
         mfirebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+        email=FirebaseAuth.getInstance().getCurrentUser().getUid();
         mCurrentUri = intent.getData();
         if (mCurrentUri == null) {
             setTitle(R.string.tambah_kegiatan);
@@ -124,7 +126,7 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
 
     private void tambahData(){
         //get email
-        String email=mfirebaseUser.getEmail();
+
         if (!isEmpty(namaKgt.getText().toString())&& !isEmpty(tglKgt.getText().toString()) && !isEmpty(jamMulai.getText().toString()) && !isEmpty(jamBrakhir.getText().toString())) {
             if (isEmpty(catatan.getText().toString())) {
                 String tempCatat = "Anda Tidak memasukan Catatan";
@@ -139,7 +141,7 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
     }
 
     private void submitKegiatan(Kegiatan kegiatan){
-        database.child("Kegiatan").push().setValue(kegiatan).addOnSuccessListener(this, new OnSuccessListener<Void>() {
+        database.child(email.toString()).push().setValue(kegiatan).addOnSuccessListener(this, new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Message.message(getApplicationContext(),"Berhasil Menyimpan Kegiatan");
