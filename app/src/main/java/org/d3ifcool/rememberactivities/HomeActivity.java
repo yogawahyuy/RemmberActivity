@@ -2,13 +2,17 @@ package org.d3ifcool.rememberactivities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,12 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity {
 
-    FloatingActionButton tambah;
-    FloatingActionButton kegiatan;
-    FloatingActionButton pencapaian;
-    FloatingActionButton tentangkami;
-    FloatingActionButton umpanbalik;
-    FloatingActionButton keluar;
+
+    CardView cardView,kegiatan,pencapaian;
 
     private FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -33,23 +33,56 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //untuk mengilangkan toolbar
+//        if (Build.VERSION.SDK_INT < 16) {
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        }else {
+//            View decorView=getWindow().getDecorView();
+//            int uiOption=View.SYSTEM_UI_FLAG_FULLSCREEN;
+//            decorView.setSystemUiVisibility(uiOption);
+//            android.app.ActionBar actionBar=getActionBar();
+//            actionBar.hide();
+//        }
         setContentView(R.layout.activity_home);
-        tambah = (FloatingActionButton)findViewById(R.id.floatingActionButton);
-        tambah.setOnClickListener(new View.OnClickListener() {
+        cardView=findViewById(R.id.tambah);
+        cardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this,TambahKegiatanActivity.class);
                 startActivity(intent);
             }
         });
-        pencapaian = (FloatingActionButton)findViewById(R.id.floatingActionButton3);
-        pencapaian.setOnClickListener(new View.OnClickListener() {
+        kegiatan=findViewById(R.id.lihatkegiatan_cardview);
+        kegiatan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent2 = new Intent(HomeActivity.this,LihatPencapaianActivity.class);
-                startActivity(intent2);
+                startActivity(new Intent(HomeActivity.this,LihatKegiatanActivity.class));
             }
         });
+//        pencapaian=findViewById(R.id.lihatpencapaian);
+//        pencapaian.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//        tambah = (FloatingActionButton)findViewById(R.id.floatingActionButton);
+//        tambah.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(HomeActivity.this,TambahKegiatanActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//        pencapaian = (FloatingActionButton)findViewById(R.id.floatingActionButton3);
+//        pencapaian.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent2 = new Intent(HomeActivity.this,LihatPencapaianActivity.class);
+//                startActivity(intent2);
+//            }
+//        });
 
 
         mFirebaseAuth=FirebaseAuth.getInstance();

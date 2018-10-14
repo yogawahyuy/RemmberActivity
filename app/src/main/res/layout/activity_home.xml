@@ -68,7 +68,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/lihatkegiatan"
+            android:id="@+id/lihatkegiatan_cardview"
             android:layout_width="75dp"
             android:layout_height="125dp"
             android:layout_columnWeight="1"
