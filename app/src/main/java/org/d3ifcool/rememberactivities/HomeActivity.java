@@ -20,7 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 public class HomeActivity extends AppCompatActivity {
 
     FloatingActionButton tambah;
+    FloatingActionButton kegiatan;
     FloatingActionButton pencapaian;
+    FloatingActionButton tentangkami;
+    FloatingActionButton umpanbalik;
+    FloatingActionButton keluar;
 
     private FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -46,6 +50,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent2);
             }
         });
+
 
         mFirebaseAuth=FirebaseAuth.getInstance();
 
