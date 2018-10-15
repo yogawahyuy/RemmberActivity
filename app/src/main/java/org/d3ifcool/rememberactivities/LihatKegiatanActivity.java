@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,7 +41,7 @@ public class LihatKegiatanActivity extends AppCompatActivity implements LoaderMa
     private DatabaseReference database;
     private RecyclerView rvView;
     private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
     private ArrayList<Kegiatan> daftarKegiatan;
     String email;
     @Override
@@ -53,6 +54,9 @@ public class LihatKegiatanActivity extends AppCompatActivity implements LoaderMa
         rvView.setHasFixedSize(true);
         layoutManager=new LinearLayoutManager(this);
         rvView.setLayoutManager(layoutManager);
+        DividerItemDecoration divider = new DividerItemDecoration(this,
+                layoutManager.getOrientation());
+        rvView.addItemDecoration(divider);
 
 
         //database

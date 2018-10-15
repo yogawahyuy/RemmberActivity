@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class HomeActivity extends AppCompatActivity {
 
 
-    CardView cardView,kegiatan,pencapaian;
+    CardView cardView,kegiatan,pencapaian,logout,tentangkami;
 
     private FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -60,13 +60,28 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(HomeActivity.this,LihatKegiatanActivity.class));
             }
         });
-//        pencapaian=findViewById(R.id.lihatpencapaian);
-//        pencapaian.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        logout=findViewById(R.id.keluar);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
+        });
+        pencapaian=findViewById(R.id.lihatpencapaian);
+        pencapaian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this,LihatPencapaianActivity.class));
+            }
+        });
+
+        tentangkami=findViewById(R.id.tentangkami);
+        tentangkami.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this,TentangKamiActivity.class));
+            }
+        });
 //        tambah = (FloatingActionButton)findViewById(R.id.floatingActionButton);
 //        tambah.setOnClickListener(new View.OnClickListener() {
 //            @Override

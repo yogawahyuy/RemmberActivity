@@ -21,13 +21,19 @@ import java.util.ArrayList;
  */
 
 public class AdapterLihatKegiatan extends RecyclerView.Adapter<AdapterLihatKegiatan.ViewHolder> {
-    public ClickHandler clickHandler;
+    private ClickHandler clickHandler;
+    private DeleteHandler deleteHandler;
     private ArrayList<Kegiatan> daftarKegiatan;
     private Context context;
     private ArrayList<Integer> mSelectedId;
 
+
     public interface ClickHandler{
         void onItemClick(int posisi);
+
+    }
+    public interface DeleteHandler{
+        void onDeleteData(Kegiatan kegiatan,int posisi);
     }
 
     public AdapterLihatKegiatan(ArrayList<Kegiatan> kegiatans,Context ctx,ClickHandler handler){
@@ -50,6 +56,8 @@ public class AdapterLihatKegiatan extends RecyclerView.Adapter<AdapterLihatKegia
 
             itemView.setFocusable(true);
             itemView.setOnClickListener(this);
+
+
         }
 
         @Override

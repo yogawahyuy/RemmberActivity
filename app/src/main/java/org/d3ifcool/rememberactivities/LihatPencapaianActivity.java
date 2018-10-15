@@ -24,17 +24,17 @@ public class LihatPencapaianActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.list_view);
 
-        FloatingActionButton fabEmail = (FloatingActionButton)findViewById(R.id.fab);
-
-        fabEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(Intent.ACTION_SENDTO);
-//                intent.setData(Uri.parse("mailto:"));
-//                intent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.order,getPackageName()));
-//                intent.putExtra(Intent.EXTRA_TEXT,getPackageName());
-            }
-        });
+//        FloatingActionButton fabEmail = (FloatingActionButton)findViewById(R.id.fab);
+//
+//        fabEmail.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Intent intent = new Intent(Intent.ACTION_SENDTO);
+////                intent.setData(Uri.parse("mailto:"));
+////                intent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.order,getPackageName()));
+////                intent.putExtra(Intent.EXTRA_TEXT,getPackageName());
+//            }
+//        });
 
 //        AdapterPencapaian customAdapter = new AdapterPencapaian();
 //        listView.setAdapter(customAdapter);

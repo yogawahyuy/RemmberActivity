@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar=(ProgressBar)findViewById(R.id.pbar);
-        progressBar.setVisibility(View.GONE);
+
         //Configure Google Sign
         GoogleSignInOptions gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         klikGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                SignIn();
 
             }
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode==RC_SIGN){
             Task<GoogleSignInAccount>task=GoogleSignIn.getSignedInAccountFromIntent(data);
             try{
+                progressBar.setVisibility(View.GONE);
                 GoogleSignInAccount account=task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             }catch (ApiException e){

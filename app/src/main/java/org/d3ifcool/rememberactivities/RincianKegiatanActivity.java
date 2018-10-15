@@ -1,20 +1,28 @@
 package org.d3ifcool.rememberactivities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import org.d3ifcool.rememberactivities.Adapter.AdapterLihatKegiatan;
 import org.d3ifcool.rememberactivities.Model.Kegiatan;
 
-public class RincianKegiatanActivity extends AppCompatActivity {
+public class RincianKegiatanActivity extends AppCompatActivity{
     private FirebaseUser mFirebaseUser;
     private DatabaseReference database;
+    String uid;
+    Kegiatan kegiatan;
     private TextView namaKgt,tglKgt,jamMulai,jamBerakhir,catatan,tempat;
 
     @Override
@@ -27,8 +35,12 @@ public class RincianKegiatanActivity extends AppCompatActivity {
         jamBerakhir=findViewById(R.id.rincian_jamBerakhir);
         catatan=findViewById(R.id.rincian_catatan);
 
-        final Kegiatan kegiatan=(Kegiatan) getIntent().getSerializableExtra("data");
+        //database
+        mFirebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+        database= FirebaseDatabase.getInstance().getReference("Kegiatan");
+        uid=mFirebaseUser.getUid();
 
+        kegiatan=(Kegiatan) getIntent().getSerializableExtra("data");
         if (kegiatan!=null){
             namaKgt.setText(kegiatan.getNamaKegiatan());
             tglKgt.setText(kegiatan.getTglKegiatan());
@@ -57,9 +69,55 @@ public class RincianKegiatanActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.rincian_hapus_kegiatan:
-                //TODO: ISI kode hapus kegiatan
+                dialoghapusKegiatan();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+    private void dialoghapusKegiatan(){
+        final AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("Hapus Kegiatan");
+        builder.setMessage("Hapus kegiatan "+kegiatan.getNamaKegiatan()+" ?");
+        builder.setPositiveButton("Hapus", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteKegiatan();
+            }
+        });
+        builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog=builder.create();
+        alertDialog.show();
+
+    }
+
+    private void deleteKegiatan(){
+        if (database!=null){
+            database.child(uid.toString()).child(kegiatan.getKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Message.message(getApplicationContext(),"Kegiatan Berhasil dihapus");
+                    startActivity(new Intent(RincianKegiatanActivity.this,LihatKegiatanActivity.class));
+                    finish();
+                }
+            });
+        }
+    }
+
+//    @Override
+//    public void onDeleteData(Kegiatan kegiatan, int posisi) {
+//        if (database!=null){
+//            database.child(uid.toString()).child(kegiatan.getKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+//                @Override
+//                public void onSuccess(Void aVoid) {
+//                    Message.message(getApplicationContext(),"Kegiatan Berhasil dihapus");
+//                }
+//            });
+//        }
+//    }
 }
