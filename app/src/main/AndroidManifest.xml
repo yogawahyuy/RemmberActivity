@@ -18,7 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity" android:theme="@style/AppTheme.NoActionBar."/>
+        <activity
+            android:name=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar." />
         <activity
             android:name=".TambahKegiatanActivity"
             android:label="Tambah Kegiatan" />
@@ -30,10 +32,14 @@
             android:label="Tentang Kami" />
         <activity
             android:name=".LihatPencapaianActivity"
-            android:label="Lihat Pencapaian"></activity>
+            android:label="Lihat Pencapaian" />
         <activity
             android:name=".PencapainDetailActivity"
             android:label="@string/title_activity_pencapain_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".tentang"
+            android:label="@string/title_activity_tentang"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
