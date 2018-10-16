@@ -163,6 +163,7 @@
                     android:layout_height="wrap_content" />
                 <TextView
                     android:text="Tentang Kami"
+                    android:id="@+id/tentangKamikami"
                     android:gravity="center"
                     android:textColor="@color/Black"
                     android:textSize="16sp"
