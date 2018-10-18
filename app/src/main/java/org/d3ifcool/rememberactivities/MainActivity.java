@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressBar=(ProgressBar)findViewById(R.id.pbar);
+        //progressBar=(ProgressBar)findViewById(R.id.pbar);
 
         //Configure Google Sign
         GoogleSignInOptions gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id))
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         klikGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBar.setVisibility(View.VISIBLE);
+                //progressBar.setVisibility(View.VISIBLE);
                SignIn();
 
             }
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     private void SignIn(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN);
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode==RC_SIGN){
             Task<GoogleSignInAccount>task=GoogleSignIn.getSignedInAccountFromIntent(data);
             try{
-                progressBar.setVisibility(View.GONE);
+               // progressBar.setVisibility(View.GONE);
                 GoogleSignInAccount account=task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             }catch (ApiException e){
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, "onComplete: success");
                             FirebaseUser user=mFirebaseAuth.getCurrentUser();
                             updateUI(user);
-                            progressBar.setVisibility(View.GONE);
+                           // progressBar.setVisibility(View.GONE);
                         }else {
                             //jika gagal memunculkan pesan ke user
 

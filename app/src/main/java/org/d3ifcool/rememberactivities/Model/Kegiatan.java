@@ -9,6 +9,23 @@ import java.io.Serializable;
 public class Kegiatan implements Serializable {
 
     private String namaKegiatan,tglKegiatan,jamKegiatan,berakhirKegiatan,tempatKegiatan,CatatanKegiatan,key,email;
+    double lang,lat;
+
+    public double getLang() {
+        return lang;
+    }
+
+    public void setLang(double lang) {
+        this.lang = lang;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
 
     public String getKey() {
         return key;
@@ -90,13 +107,16 @@ public class Kegiatan implements Serializable {
                 ;
     }
 
-    public Kegiatan(String namaKegiatan, String tglKegiatan, String jamKegiatan, String berakhirKegiatan, String tempatKegiatan, String catatanKegiatan, String email) {
+    public Kegiatan(String namaKegiatan, String tglKegiatan, String jamKegiatan, String berakhirKegiatan, String tempatKegiatan,double langtitude,double latitude ,String catatanKegiatan, String email) {
         this.namaKegiatan = namaKegiatan;
         this.tglKegiatan = tglKegiatan;
         this.jamKegiatan = jamKegiatan;
         this.berakhirKegiatan = berakhirKegiatan;
         this.tempatKegiatan = tempatKegiatan;
+        this.lang=langtitude;
+        this.lat=latitude;
         CatatanKegiatan = catatanKegiatan;
         this.email = email;
+
     }
 }

@@ -36,6 +36,10 @@ import org.d3ifcool.rememberactivities.Database.DBHelper;
 import org.d3ifcool.rememberactivities.Database.RememberActivitiesContract;
 import org.d3ifcool.rememberactivities.Model.Kegiatan;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,7 +73,9 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
     private DatabaseReference database;
     private FirebaseUser mfirebaseUser;
     String email;
+    double lang,lat;
     Kegiatan kegiatan;
+    int PLACE_PICKER_REQUEST=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +89,7 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
         email=FirebaseAuth.getInstance().getCurrentUser().getUid();
         mCurrentUri = intent.getData();
 
+
         //inisialisasi tampilan
         namaKgt = findViewById(R.id.namaKegiatan);
         tglKgt = findViewById(R.id.tanggalKegiatan);
@@ -90,6 +97,22 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
         jamBrakhir = findViewById(R.id.jamBerakhir);
         tempat = findViewById(R.id.tempat);
         catatan = findViewById(R.id.catatan);
+
+        //Inisialisasi untuk place picker
+        final PlacePicker.IntentBuilder builder=new PlacePicker.IntentBuilder();
+
+        tempat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    startActivityForResult(builder.build(TambahKegiatanActivity.this),PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
 
         if (getIntent().getSerializableExtra("datakegiatan") == null) {
             setTitle(R.string.tambah_kegiatan);
@@ -135,16 +158,32 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
         return TextUtils.isEmpty(s);
     }
 
+    //Untuk kembalian place picker
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode==PLACE_PICKER_REQUEST){
+            if (resultCode==RESULT_OK){
+                Place place=PlacePicker.getPlace(data,this);
+                lang=place.getLatLng().longitude;
+                lat=place.getLatLng().latitude;
+                tempat.setText(place.getAddress().toString());
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void tambahData(){
         //get email
 
         if (!isEmpty(namaKgt.getText().toString())&& !isEmpty(tglKgt.getText().toString()) && !isEmpty(jamMulai.getText().toString()) && !isEmpty(jamBrakhir.getText().toString())) {
             if (isEmpty(catatan.getText().toString())) {
                 String tempCatat = "Anda Tidak memasukan Catatan";
-                submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(), tempCatat, email));
+                submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(),lang,lat, tempCatat, email));
 
             } else {
-                submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(),catatan.getText().toString(),email));
+                submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(),lang,lat,catatan.getText().toString(),email));
             }
         }else{
             Message.message(this,"Terdapat Field yang Kosong");
@@ -157,6 +196,7 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
             public void onSuccess(Void aVoid) {
                 Message.message(getApplicationContext(),"Berhasil Menyimpan Kegiatan");
                 startActivity(new Intent(TambahKegiatanActivity.this,LihatKegiatanActivity.class));
+                finish();
             }
         });
 

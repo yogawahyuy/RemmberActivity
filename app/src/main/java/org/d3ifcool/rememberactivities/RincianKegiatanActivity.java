@@ -9,6 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.d3ifcool.rememberactivities.Adapter.AdapterLihatKegiatan;
 import org.d3ifcool.rememberactivities.Model.Kegiatan;
 
-public class RincianKegiatanActivity extends AppCompatActivity{
+public class RincianKegiatanActivity extends AppCompatActivity implements OnMapReadyCallback {
     private FirebaseUser mFirebaseUser;
     private DatabaseReference database;
     String uid;
@@ -34,6 +42,10 @@ public class RincianKegiatanActivity extends AppCompatActivity{
         jamMulai=findViewById(R.id.rincian_jamMulai);
         jamBerakhir=findViewById(R.id.rincian_jamBerakhir);
         catatan=findViewById(R.id.rincian_catatan);
+
+        SupportMapFragment mapFragment=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.mapView);
+        mapFragment.getMapAsync(this);
+
 
         //database
         mFirebaseUser= FirebaseAuth.getInstance().getCurrentUser();
@@ -107,6 +119,13 @@ public class RincianKegiatanActivity extends AppCompatActivity{
                 }
             });
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        LatLng tempatnya=new LatLng(kegiatan.getLat(),kegiatan.getLang());
+        googleMap.addMarker(new MarkerOptions().position(tempatnya)).setTitle(kegiatan.getTempatKegiatan());
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(tempatnya));
     }
 
 //    @Override

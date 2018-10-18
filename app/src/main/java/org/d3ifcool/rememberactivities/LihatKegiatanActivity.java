@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.MapView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +44,7 @@ public class LihatKegiatanActivity extends AppCompatActivity implements LoaderMa
     private RecyclerView.Adapter adapter;
     private LinearLayoutManager layoutManager;
     private ArrayList<Kegiatan> daftarKegiatan;
+
     String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

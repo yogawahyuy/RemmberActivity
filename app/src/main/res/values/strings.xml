@@ -12,6 +12,7 @@
     <string name="edit_kegiatan">Edit Kegiatan</string>
     <string name="title_activity_tentang">tentang</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="google_maps_key">AIzaSyBjgH53cqYuapvN0osp6WwBqyoqES06i3E</string>
 
 
 </resources>
