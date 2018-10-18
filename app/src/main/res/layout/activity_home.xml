@@ -12,7 +12,8 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="2">
+    android:layout_weight="2"
+    android:background="@color/colorMain">
     <TextView
         android:id="@+id/textGrid"
         android:text="Remember Activities"
@@ -44,6 +45,7 @@
             app:cardElevation="8dp"
             app:cardCornerRadius="8dp"
 
+
             >
             <LinearLayout
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -52,10 +54,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@drawable/alarm2"
+                    android:src="@drawable/tambah"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
                 <TextView
                     android:gravity="center"
                     android:text="Tambah Kegiatan"
@@ -87,10 +89,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@drawable/alarm2"
+                    android:src="@drawable/kegiatan"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
                 <TextView
                     android:text="Lihat Kegiatan"
                     android:gravity="center"
@@ -122,10 +124,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@drawable/alarm2"
+                    android:src="@drawable/pencapain"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
                 <TextView
                     android:text="Lihat Pencapaian"
                     android:gravity="center"
@@ -157,10 +159,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@drawable/alarm2"
+                    android:src="@drawable/tentangkami"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
                 <TextView
                     android:text="Tentang Kami"
                     android:id="@+id/tentangKamikami"

@@ -5,6 +5,7 @@
     android:id="@+id/mainlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradasi"
     tools:context="org.d3ifcool.rememberactivities.MainActivity">
 <ImageView
     android:layout_width="130dp"
@@ -51,6 +52,7 @@
         android:layout_marginRight="16dp"
         android:id="@+id/login"
         android:text="Login"
+        android:background="#FFFF"
         android:layout_below="@+id/password"
         android:textColor="@color/Black"
         android:layout_marginTop="16dp"/>
@@ -59,7 +61,7 @@
         android:id="@+id/atau"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="atau login dengan"
+        android:text="_______________________OR__________________________"
         android:layout_below="@+id/login"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
@@ -71,6 +73,5 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/atau"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
             />
 </RelativeLayout>
