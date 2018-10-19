@@ -1,5 +1,6 @@
 package org.d3ifcool.rememberactivities;
 
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -131,15 +132,39 @@ public class tentang extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            Fragment fragment =null;
+            switch (position){
+                case 1 :
+                    Fragment1 frag1 = new Fragment1();
+                    break;
+                case 2:
+                    Fragment2 frag2 = new Fragment2();
+                    break;
+                case 3:
+                    Fragment3 frag3 = new Fragment3();
+
+            }
+            return fragment;
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
             return 3;
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position){
+                case 0:
+                    return "SILFI";
+                case 1:
+                    return "YOGA";
+                case 2:
+                    return "SYIFA";
+            }
+            return null;
         }
     }
 }
