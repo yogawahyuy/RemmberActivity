@@ -1,48 +1,28 @@
 package org.d3ifcool.rememberactivities.Alarm;
 
-import android.app.LoaderManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.icu.util.Calendar;
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.widget.Toast;
 
-import org.d3ifcool.rememberactivities.Database.DBHelper;
-import org.d3ifcool.rememberactivities.Database.RememberActivitiesContract;
 import org.d3ifcool.rememberactivities.LihatKegiatanActivity;
-import org.d3ifcool.rememberactivities.Model.Kegiatan;
 import org.d3ifcool.rememberactivities.PopupActivity;
 import org.d3ifcool.rememberactivities.R;
 
-import java.util.ArrayList;
-
-/**
- * Created by Yoga Wahyu Yuwono on 01/10/2018.
- */
-
-public class AlarmRecivier extends BroadcastReceiver {
-
-
+public class SecondAlarmRecivier extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO Auto-generated method stub
         int id=intent.getIntExtra("id",0);
         String kegiatan=intent.getStringExtra("kegiatan");
         String jam=intent.getStringExtra("jam");
         double lat=intent.getDoubleExtra("lat",0);
         double lang=intent.getDoubleExtra("lang",0);
+        String catatan=intent.getStringExtra("catatan");
+        String jamselesai=intent.getStringExtra("jamselesai");
         final NotificationManager manager=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         final Intent notifinten=new Intent(context,LihatKegiatanActivity.class);
         notifinten.setFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -52,7 +32,7 @@ public class AlarmRecivier extends BroadcastReceiver {
         builder.setSmallIcon(R.drawable.logoooo);
         builder.setColor(ContextCompat.getColor(context,R.color.colorAccent));
         builder.setContentTitle(context.getString(R.string.app_name));
-        builder.setContentText(kegiatan);
+        builder.setContentText("Second alarm recivier");
         builder.setContentIntent(pendingIntent);
         builder.setPriority(Notification.PRIORITY_HIGH);
         manager.notify(id,builder.build());
@@ -63,7 +43,8 @@ public class AlarmRecivier extends BroadcastReceiver {
         popUp.putExtra("jamkgt",jam);
         popUp.putExtra("lat",lat);
         popUp.putExtra("lang",lang);
+        popUp.putExtra("catatan",catatan);
+        popUp.putExtra("jamselesai",jamselesai);
         context.startActivity(popUp);
     }
 }
-

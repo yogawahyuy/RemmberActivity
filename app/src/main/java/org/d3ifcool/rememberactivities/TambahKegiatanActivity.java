@@ -23,6 +23,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -31,7 +32,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import org.d3ifcool.rememberactivities.Adapter.AdapterLihatKegiatan;
 import org.d3ifcool.rememberactivities.Alarm.AlarmRecivier;
+import org.d3ifcool.rememberactivities.Alarm.SecondAlarmRecivier;
 import org.d3ifcool.rememberactivities.Database.DBHelper;
 import org.d3ifcool.rememberactivities.Database.RememberActivitiesContract;
 import org.d3ifcool.rememberactivities.Model.Kegiatan;
@@ -43,9 +46,13 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -76,6 +83,10 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
     double lang,lat;
     Kegiatan kegiatan;
     int PLACE_PICKER_REQUEST=1;
+    Calendar calNow;
+    Calendar calSet,calSetSelesai;
+    private FirebaseUser mFireBaseuser;
+    private ArrayList<Kegiatan> daftarKegiatan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +108,9 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
         jamBrakhir = findViewById(R.id.jamBerakhir);
         tempat = findViewById(R.id.tempat);
         catatan = findViewById(R.id.catatan);
+        calNow= Calendar.getInstance();
+        calSet= (Calendar) calNow.clone();
+        calSetSelesai=(Calendar) calNow.clone();
 
         //Inisialisasi untuk place picker
         final PlacePicker.IntentBuilder builder=new PlacePicker.IntentBuilder();
@@ -151,6 +165,24 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
             }
         });
 
+        //mengambil data
+        database.child(email.toString()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                daftarKegiatan=new ArrayList<>();
+                for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()){
+                    Kegiatan kegiatan=noteDataSnapshot.getValue(Kegiatan.class);
+                    kegiatan.setKey(noteDataSnapshot.getKey());
+                    daftarKegiatan.add(kegiatan);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("Lihat kegiatan", "onCancelled: "+databaseError);
+            }
+        });
+
     }
 
     //cek jika ada field yang kosong
@@ -196,6 +228,8 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
             public void onSuccess(Void aVoid) {
                 Message.message(getApplicationContext(),"Berhasil Menyimpan Kegiatan");
                 startActivity(new Intent(TambahKegiatanActivity.this,LihatKegiatanActivity.class));
+                setAlarm(calSet);
+                setAlarmselesai(calSetSelesai);
                 finish();
             }
         });
@@ -239,56 +273,6 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
 
 
 
-
-    //dibawah ini adalah algoritma tambah kegiatan nama method "Add Data"
-
-    private void addData() {
-        namakegiatan = namaKgt.getText().toString();
-        tanggalkegiatan = tglKgt.getText().toString();
-        jamMulaiKgt = jamMulai.getText().toString();
-        jamBerakhirKgt = jamBrakhir.getText().toString();
-        tempatKgt = tempat.getText().toString();
-        catatanKgt = catatan.getText().toString();
-        if (mCurrentUri == null && TextUtils.isEmpty(namakegiatan) && TextUtils.isEmpty(tanggalkegiatan) && TextUtils.isEmpty(jamMulaiKgt) && TextUtils.isEmpty(jamBerakhirKgt)) {
-            return;
-        }
-        if (namakegiatan.isEmpty()||tanggalkegiatan.isEmpty()||jamMulaiKgt.isEmpty()||jamBerakhirKgt.isEmpty()){
-            Message.message(getApplicationContext(),"Tolong isi semua field");
-        }else {
-                if (TextUtils.isEmpty(catatanKgt)){
-                    catatanKgt="Anda Tidak Memasukan Catatan";
-                    status="tercapai";
-                }else if (!TextUtils.isEmpty(catatanKgt)){
-                    status="Belum Tercapai";
-                }
-
-                ContentValues values=new ContentValues();
-                values.put(RememberActivitiesContract.myContractEntry.NAME,namakegiatan);
-                values.put(RememberActivitiesContract.myContractEntry.tgl_mulai,tanggalkegiatan);
-                values.put(RememberActivitiesContract.myContractEntry.jam_mulai,jamMulaiKgt);
-                values.put(RememberActivitiesContract.myContractEntry.jam_berakhir,jamBerakhirKgt);
-                values.put(RememberActivitiesContract.myContractEntry.tempat,tempatKgt);
-                values.put(RememberActivitiesContract.myContractEntry.catatan,catatanKgt);
-                if (mCurrentUri==null){
-                    Uri newUri=getContentResolver().insert(RememberActivitiesContract.myContractEntry.CONTENT_URI,values);
-                    if (newUri==null){
-                        Message.message(this,"Gagal Menyimpan Kegiatan");
-                    }else {
-                        Message.message(this,"Berhasil Menyimpan Kegiatan");
-                        startActivity(new Intent(TambahKegiatanActivity.this,LihatKegiatanActivity.class));
-                    }
-                }else{
-                    int rowsAffected=getContentResolver().update(mCurrentUri,values,null,null);
-                    if (rowsAffected==0){
-                        Message.message(this,"Gagal Memperbaharui Kegiatan");
-                    }else {
-                        Message.message(this,"Berhasil Memperbaharui Kegiatan");
-                        startActivity(new Intent(TambahKegiatanActivity.this,LihatKegiatanActivity.class));
-                    }
-                }
-        }
-    }
-//    */
 
         //dibawah ini adalah algoritma untuk menampilkan notifikasi
 
@@ -411,19 +395,11 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
         @Override
         public void onTimeSet(TimePicker timePicker, int i, int i1) {
             jamMulai.setText(i+":"+i1);
-            Calendar calNow = Calendar.getInstance();
-            Calendar calSet = (Calendar) calNow.clone();
             calSet.set(tahun,bulan,hari);
             calSet.set(Calendar.HOUR_OF_DAY, i);
             calSet.set(Calendar.MINUTE, i1);
             calSet.set(Calendar.SECOND, 0);
             calSet.set(Calendar.MILLISECOND, 0);
-            if (calSet.compareTo(calNow) <= 0) {
-                // Today Set time passed, count to tomorrow
-              Message.message(getApplicationContext(),"Tanggal atau jam Tidak valid");
-            } else {
-
-            }
           //  setAlarm(calSet);
 
         }
@@ -447,19 +423,11 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
         @Override
         public void onTimeSet(TimePicker timePicker, int i, int i1) {
             jamBrakhir.setText(i+":"+i1);
-            Calendar calNow = Calendar.getInstance();
-            Calendar calSet = (Calendar) calNow.clone();
-            calSet.set(tahunselesai,bulanselesai,hariselesai);
-            calSet.set(Calendar.HOUR_OF_DAY, i);
-            calSet.set(Calendar.MINUTE, i1);
-            calSet.set(Calendar.SECOND, 0);
-            calSet.set(Calendar.MILLISECOND, 0);
-            if (calSet.compareTo(calNow) <= 0) {
-                // Today Set time passed, count to tomorrow
-                Message.message(getApplicationContext(),"Tanggal Tidak valid");
-            } else {
-
-            }
+            calSetSelesai.set(tahun,bulan,hari);
+            calSetSelesai.set(Calendar.HOUR_OF_DAY, i);
+            calSetSelesai.set(Calendar.MINUTE, i1);
+            calSetSelesai.set(Calendar.SECOND, 0);
+            calSetSelesai.set(Calendar.MILLISECOND, 0);
            // setAlarmselesai(calSet);
 
         }
@@ -469,60 +437,31 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
 
         //disini terdapat algoritma untuk menambahkan alaram
       private void setAlarm(Calendar target){
-        Cursor cursor;
-        SQLiteDatabase db=newMydbHelper.getReadableDatabase();
-        try{
-            String query="Select _id from "+RememberActivitiesContract.myContractEntry.Table_Name;
-            cursor=db.rawQuery(query,null);
-            if (cursor.getCount()==0) {
-                int id=1;
-                Uri CurrentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
-                Intent intent = new Intent(getBaseContext(), AlarmRecivier.class);
-                intent.setData(CurrentUri);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), RQS_1, intent, 0);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
-            }else if(cursor.moveToLast()){
-                int id=cursor.getCount()+1;
-                Uri CurrentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
-                Intent intent = new Intent(getBaseContext(), AlarmRecivier.class);
-                intent.setData(CurrentUri);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), cursor.getCount()+1, intent, 0);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
-            }
-        }catch (Exception e){
-
-        }
+          Intent intent=new Intent(TambahKegiatanActivity.this,AlarmRecivier.class);
+          intent.putExtra("id",daftarKegiatan.size()-1);
+          intent.putExtra("kegiatan",daftarKegiatan.get(daftarKegiatan.size()-1).getNamaKegiatan());
+          intent.putExtra("jam",daftarKegiatan.get(daftarKegiatan.size()-1).getJamKegiatan());
+          intent.putExtra("lat",daftarKegiatan.get(daftarKegiatan.size()-1).getLat());
+          intent.putExtra("lang",daftarKegiatan.get(daftarKegiatan.size()-1).getLang());
+          PendingIntent pendingIntent=PendingIntent.getBroadcast(getBaseContext(),daftarKegiatan.size()-1,intent,0);
+          AlarmManager alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
+          alarmManager.set(AlarmManager.RTC_WAKEUP,target.getTimeInMillis(),pendingIntent);
 
     }
 
     private void setAlarmselesai(Calendar target){
-        Cursor cursor;
-        SQLiteDatabase db=newMydbHelper.getReadableDatabase();
-        try{
-            String query="Select _id from "+RememberActivitiesContract.myContractEntry.Table_Name;
-            cursor=db.rawQuery(query,null);
-            if (cursor.getCount()==0) {
-                int id=1;
-                Uri CurrentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
-                Intent intent = new Intent(getBaseContext(), AlarmRecivier.class);
-                intent.setData(CurrentUri);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), RQS_1, intent, 0);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
-            }else if(cursor.moveToLast()){
-                int id=cursor.getCount()+1;
-                Uri CurrentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
-                Intent intent = new Intent(getBaseContext(), AlarmRecivier.class);
-                intent.setData(CurrentUri);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), cursor.getCount()+100, intent, 0);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
-            }
-        }catch (Exception e){
-
-        }
+        Intent intent=new Intent(TambahKegiatanActivity.this,SecondAlarmRecivier.class);
+        intent.putExtra("id",daftarKegiatan.size()-1);
+        intent.putExtra("id",daftarKegiatan.size()-1);
+        intent.putExtra("kegiatan",daftarKegiatan.get(daftarKegiatan.size()-1).getNamaKegiatan());
+        intent.putExtra("jam",daftarKegiatan.get(daftarKegiatan.size()-1).getJamKegiatan());
+        intent.putExtra("lat",daftarKegiatan.get(daftarKegiatan.size()-1).getLat());
+        intent.putExtra("lang",daftarKegiatan.get(daftarKegiatan.size()-1).getLang());
+        intent.putExtra("catatan",daftarKegiatan.get(daftarKegiatan.size()-1).getCatatanKegiatan());
+        intent.putExtra("jamselesai",daftarKegiatan.get(daftarKegiatan.size()-1).getBerakhirKegiatan());
+        PendingIntent pendingIntent=PendingIntent.getBroadcast(getBaseContext(),daftarKegiatan.size()-1,intent,0);
+        AlarmManager alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,target.getTimeInMillis(),pendingIntent);
 
     }
 

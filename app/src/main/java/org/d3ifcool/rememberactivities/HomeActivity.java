@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
         tentangkami.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this,tentang.class));
+                startActivity(new Intent(HomeActivity.this,PopupActivity.class));
             }
         });
 //        tambah = (FloatingActionButton)findViewById(R.id.floatingActionButton);
