@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="@drawable/yoooo"
+    android:background="@color/colorMain"
     android:weightSum="10"
     tools:context="org.d3ifcool.rememberactivities.HomeActivity">
 
@@ -194,10 +194,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@drawable/alarm2"
+                    android:src="@drawable/feedback"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
                 <TextView
                     android:text="Umpan Balik"
                     android:gravity="center"
@@ -228,10 +228,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@drawable/alarm2"
+                    android:src="@drawable/logout"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
                 <TextView
                     android:text="Keluar"
                     android:gravity="center"
