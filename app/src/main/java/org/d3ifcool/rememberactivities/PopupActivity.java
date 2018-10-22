@@ -22,8 +22,10 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -46,6 +48,7 @@ public class PopupActivity extends AppCompatActivity implements OnMapReadyCallba
     int posisi;
     String kegiatan,jamKegiatan,catatannya,jamselesai;
     double lat,lang;
+    LinearLayout linearLayout;
 
 
     @Override
@@ -57,6 +60,7 @@ public class PopupActivity extends AppCompatActivity implements OnMapReadyCallba
         jeda=findViewById(R.id.popUp_jeda);
         tutup=findViewById(R.id.popUp_tutup);
         judul=findViewById(R.id.popUp_judul);
+        linearLayout=findViewById(R.id.jeda);
 
         //maps
         SupportMapFragment mapFragment=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.popUP_mapView);
@@ -71,10 +75,12 @@ public class PopupActivity extends AppCompatActivity implements OnMapReadyCallba
         lang=intent.getDoubleExtra("lang",0);
         catatannya=intent.getStringExtra("catatan");
         jamselesai=intent.getStringExtra("jamselesai");
+        //untuk mengecek yang muncul popup mulai kegiatan atau selesai
         if (catatannya!=null&&catatannya.equalsIgnoreCase("Anda Tidak memasukan Catatan")){
-            jeda.setVisibility(View.GONE);
-            judul.setText("Kegiatan Selesai \n Anda tidak memasukan hal yang akan dicapai");
+            linearLayout.setVisibility(View.GONE);
+            judul.setText("Kegiatan Selesai !");
             namaKegiatan.setText(catatannya);
+            namaKegiatan.setTextSize(16);
             jamMulai.setText(jamselesai);
             //ringtone
             try {
@@ -93,9 +99,19 @@ public class PopupActivity extends AppCompatActivity implements OnMapReadyCallba
                 Log.e("popup", "onCreate: "+e );
             }
         }else if (catatannya!=null&&!catatannya.equalsIgnoreCase("Anda Tidak memasukan Catatan")){
+            judul.setText("Kegiatan Selesai !");
             jeda.setText("Tercapai");
             tutup.setText("Tidak Tercapai");
+            namaKegiatan.setText(kegiatan);
+            jamMulai.setText(jamKegiatan);
+            jeda.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }else if (catatannya==null){
+            linearLayout.setVisibility(View.GONE);
             namaKegiatan.setText(kegiatan);
             jamMulai.setText(jamKegiatan);
             //ringtone
@@ -103,7 +119,6 @@ public class PopupActivity extends AppCompatActivity implements OnMapReadyCallba
                 Uri ringtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
                 final Ringtone curent = RingtoneManager.getRingtone(getApplicationContext(), ringtone);
                 curent.play();
-                tutup.setText("Tidak Tercapai");
                 tutup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

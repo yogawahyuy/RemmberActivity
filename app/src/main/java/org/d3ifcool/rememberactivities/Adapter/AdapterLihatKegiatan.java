@@ -90,30 +90,4 @@ public class AdapterLihatKegiatan extends RecyclerView.Adapter<AdapterLihatKegia
     public int getItemCount() {
         return daftarKegiatan.size();
     }
-
-//    public AdapterLihatKegiatan(Context context, Cursor c) {
-//        super(context, c, 0);
-//    }
-//
-//    @Override
-//    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-//        return LayoutInflater.from(context).inflate(R.layout.lihatkegiatan_card_view,parent,false);
-//    }
-//
-//    @Override
-//    public void bindView(View view, Context context, Cursor cursor) {
-//        TextView namaKegiatan=view.findViewById(R.id.title_cardview);
-//        TextView tglKegiatan=view.findViewById(R.id.date);
-//
-//        int namaColumnIndex=cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.NAME);
-//        int tglColumnIndex=cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.tgl_mulai);
-//
-//        String namaKgt=cursor.getString(namaColumnIndex);
-//        String tglKgt=cursor.getString(tglColumnIndex);
-//
-//        namaKegiatan.setText(namaKgt);
-//        tglKegiatan.setText(tglKgt);
-//
-//
-//    }
 }
