@@ -56,7 +56,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 
-public class TambahKegiatanActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class TambahKegiatanActivity extends AppCompatActivity{
     private static final int EXISTING_LOADER = 0;
     private Uri mCurrentUri;
     private boolean hasChanged = false;
@@ -92,15 +92,6 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tambah_kegiatan);
-        //dibawah ini adalah inisialisasi semua komponen
-        Intent intent = getIntent();
-        //disini untuk database
-        database=FirebaseDatabase.getInstance().getReference("Kegiatan");
-        mfirebaseUser=FirebaseAuth.getInstance().getCurrentUser();
-        email=FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mCurrentUri = intent.getData();
-
-
         //inisialisasi tampilan
         namaKgt = findViewById(R.id.namaKegiatan);
         tglKgt = findViewById(R.id.tanggalKegiatan);
@@ -111,6 +102,33 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
         calNow= Calendar.getInstance();
         calSet= (Calendar) calNow.clone();
         calSetSelesai=(Calendar) calNow.clone();
+        //untuk on click listener
+        tglKgt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tanggalKegiatan();
+            }
+        });
+        jamMulai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setjamMulai(false);
+            }
+        });
+        jamBrakhir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setjamBerakhir();
+            }
+        });
+
+        //dibawah ini adalah inisialisasi semua komponen
+        Intent intent = getIntent();
+        //disini untuk database
+        database=FirebaseDatabase.getInstance().getReference("Kegiatan");
+        mfirebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+        email=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mCurrentUri = intent.getData();
 
         //Inisialisasi untuk place picker
         final PlacePicker.IntentBuilder builder=new PlacePicker.IntentBuilder();
@@ -144,26 +162,6 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
         }
         newMydbHelper = new DBHelper(this);
 
-
-        //untuk on click listener
-        tglKgt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tanggalKegiatan();
-            }
-        });
-        jamMulai.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setjamMulai(false);
-            }
-        });
-        jamBrakhir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setjamBerakhir();
-            }
-        });
 
         //mengambil data
         database.child(email.toString()).addValueEventListener(new ValueEventListener() {
@@ -459,65 +457,11 @@ public class TambahKegiatanActivity extends AppCompatActivity implements LoaderM
         intent.putExtra("lang",daftarKegiatan.get(daftarKegiatan.size()-1).getLang());
         intent.putExtra("catatan",daftarKegiatan.get(daftarKegiatan.size()-1).getCatatanKegiatan());
         intent.putExtra("jamselesai",daftarKegiatan.get(daftarKegiatan.size()-1).getBerakhirKegiatan());
+        intent.putExtra("tgl",daftarKegiatan.get(daftarKegiatan.size()-1).getTglKegiatan());
         PendingIntent pendingIntent=PendingIntent.getBroadcast(getBaseContext(),daftarKegiatan.size()-1,intent,0);
         AlarmManager alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP,target.getTimeInMillis(),pendingIntent);
 
     }
-
-
-
-        //disini terdapat algoritma untuk menambah dan mengambil data (untuk edit) kegiatan
-
-       @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        String [] projection={
-                RememberActivitiesContract.myContractEntry.UID,
-                RememberActivitiesContract.myContractEntry.NAME,
-                RememberActivitiesContract.myContractEntry.tgl_mulai,
-                RememberActivitiesContract.myContractEntry.jam_mulai,
-                RememberActivitiesContract.myContractEntry.jam_berakhir,
-                RememberActivitiesContract.myContractEntry.catatan,
-        };
-
-        return new CursorLoader(this,mCurrentUri,projection,null,null,null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor==null||cursor.getCount()<1){
-            return;
-        }
-        if (cursor.moveToFirst()) {
-            int nameColumnIndex = cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.NAME);
-            int tglmulaiColumnIndex = cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.tgl_mulai);
-            int jammulaiColumnIndex = cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.jam_mulai);
-            int jamberakhirColumnIndex = cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.jam_berakhir);
-            int catatanColumnIndex = cursor.getColumnIndex(RememberActivitiesContract.myContractEntry.catatan);
-            String nmkgt = cursor.getString(nameColumnIndex);
-            String tglmulai = cursor.getString(tglmulaiColumnIndex);
-            String jammulai = cursor.getString(jammulaiColumnIndex);
-            String jamberakhir = cursor.getString(jamberakhirColumnIndex);
-
-            String catatannya = cursor.getString(catatanColumnIndex);
-
-            namaKgt.setText(nmkgt);
-            tglKgt.setText(tglmulai);
-            jamMulai.setText(jammulai);
-            jamBrakhir.setText(jamberakhir);
-            catatan.setText(catatannya);
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        namaKgt.setText("");
-        tglKgt.setText("");
-        jamMulai.setText("");
-        jamBrakhir.setText("");
-        catatan.setText("");
-    }
-
-
     }
 

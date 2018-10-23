@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.d3ifcool.rememberactivities.Model.Kegiatan;
+import org.d3ifcool.rememberactivities.Model.Pencapaian;
 import org.d3ifcool.rememberactivities.R;
 
 import java.util.ArrayList;
@@ -20,14 +21,14 @@ import java.util.ArrayList;
  */
 
 public class AdapterPencapaian extends RecyclerView.Adapter<AdapterPencapaian.ViewHolder> {
-    private AdapterLihatKegiatan.ClickHandler clickHandler;
-    private AdapterLihatKegiatan.DeleteHandler deleteHandler;
-    private ArrayList<Kegiatan> daftarKegiatan;
+    private AdapterPencapaian.ClickHandler clickHandler;
+    //private AdapterPencapaian.DeleteHandler deleteHandler;
+    private ArrayList<Pencapaian> daftarPencapaian;
     private Context context;
     private ArrayList<Integer> mSelectedId;
 
-    public AdapterPencapaian(ArrayList<Kegiatan> kegiatans,Context ctx,AdapterLihatKegiatan.ClickHandler handler){
-        daftarKegiatan=kegiatans;
+    public AdapterPencapaian(ArrayList<Pencapaian> kegiatans, Context ctx, AdapterPencapaian.ClickHandler handler){
+        daftarPencapaian=kegiatans;
         context=ctx;
         clickHandler=handler;
         mSelectedId=new ArrayList<>();
@@ -43,11 +44,11 @@ public class AdapterPencapaian extends RecyclerView.Adapter<AdapterPencapaian.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final String jam=daftarKegiatan.get(position).getJamKegiatan();
-        final String nama=daftarKegiatan.get(position).getNamaKegiatan();
-        final String tgl=daftarKegiatan.get(position).getTglKegiatan();
+        final String jam=daftarPencapaian.get(position).getTgl_pencapain();
+        final String nama=daftarPencapaian.get(position).getNamaPencapaian();
+        //final String tgl=daftarPencapaian.get(position).getTglKegiatan();
 
-        holder.tgl.setText(tgl);
+       // holder.tgl.setText(tgl);
         holder.jam.setText(jam);
         holder.nama.setText(nama);
         holder.itemView.setSelected(mSelectedId.contains(position));
@@ -55,7 +56,7 @@ public class AdapterPencapaian extends RecyclerView.Adapter<AdapterPencapaian.Vi
 
     @Override
     public int getItemCount() {
-        return daftarKegiatan.size();
+        return daftarPencapaian.size();
     }
 
     public interface ClickHandler{

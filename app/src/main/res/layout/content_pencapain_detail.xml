@@ -8,10 +8,67 @@
     tools:context="org.d3ifcool.rememberactivities.PencapainDetailActivity"
     tools:showIn="@layout/activity_pencapain_detail">
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/mapView">
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="Saya telah melaksanakan olahraga sekarang berat badan saya 37 kg" />
+        android:orientation="horizontal"
+        android:layout_below="@+id/mapView"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pencapaian                    :  "
+            android:textColor="#000" />
+        <TextView
+            android:id="@+id/pencapaian_catatKgt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="xxxx"
+            android:textColor="#000"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/mapView"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nama Kegiatn                :  "
+            android:textColor="#000" />
+        <TextView
+            android:id="@+id/pencapaian_namaKgt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="xxxx"
+            android:textColor="#000"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/mapView"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tanggal Kegiatan          :  "
+            android:textColor="#000" />
+        <TextView
+            android:id="@+id/pencapaian_tglKgt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="xxxx"
+            android:textColor="#000"/>
+    </LinearLayout>
+    </LinearLayout>
+
 
 </android.support.v4.widget.NestedScrollView>

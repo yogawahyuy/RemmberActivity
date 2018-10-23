@@ -23,6 +23,7 @@ public class SecondAlarmRecivier extends BroadcastReceiver {
         double lang=intent.getDoubleExtra("lang",0);
         String catatan=intent.getStringExtra("catatan");
         String jamselesai=intent.getStringExtra("jamselesai");
+        String tgl=intent.getStringExtra("tgl");
         final NotificationManager manager=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         final Intent notifinten=new Intent(context,LihatKegiatanActivity.class);
         notifinten.setFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -45,6 +46,7 @@ public class SecondAlarmRecivier extends BroadcastReceiver {
         popUp.putExtra("lang",lang);
         popUp.putExtra("catatan",catatan);
         popUp.putExtra("jamselesai",jamselesai);
+        popUp.putExtra("tgl",tgl);
         context.startActivity(popUp);
     }
 }

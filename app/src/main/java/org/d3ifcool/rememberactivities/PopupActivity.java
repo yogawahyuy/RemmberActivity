@@ -35,10 +35,22 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.d3ifcool.rememberactivities.Database.DBHelper;
 import org.d3ifcool.rememberactivities.Database.RememberActivitiesContract;
 import org.d3ifcool.rememberactivities.Alarm.AlarmRecivier;
+import org.d3ifcool.rememberactivities.Model.Kegiatan;
+import org.d3ifcool.rememberactivities.Model.Pencapaian;
+
+import java.util.ArrayList;
 
 import static org.d3ifcool.rememberactivities.TambahKegiatanActivity.RQS_1;
 
@@ -46,9 +58,12 @@ public class PopupActivity extends AppCompatActivity implements OnMapReadyCallba
     TextView namaKegiatan,jamMulai,judul;
     Button jeda,tutup;
     int posisi;
-    String kegiatan,jamKegiatan,catatannya,jamselesai;
+    String kegiatan,jamKegiatan,catatannya,jamselesai,Uid,tglKgt;
     double lat,lang;
     LinearLayout linearLayout;
+    private DatabaseReference database;
+    private FirebaseUser mfirebaseUser;
+    private ArrayList<Pencapaian> daftarPencapaian;
 
 
     @Override
@@ -61,6 +76,12 @@ public class PopupActivity extends AppCompatActivity implements OnMapReadyCallba
         tutup=findViewById(R.id.popUp_tutup);
         judul=findViewById(R.id.popUp_judul);
         linearLayout=findViewById(R.id.jeda);
+
+        //disini untuk database
+        database=FirebaseDatabase.getInstance().getReference("Pencapaian");
+        mfirebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+        Uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
         //maps
         SupportMapFragment mapFragment=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.popUP_mapView);
@@ -75,6 +96,7 @@ public class PopupActivity extends AppCompatActivity implements OnMapReadyCallba
         lang=intent.getDoubleExtra("lang",0);
         catatannya=intent.getStringExtra("catatan");
         jamselesai=intent.getStringExtra("jamselesai");
+        tglKgt=intent.getStringExtra("tgl");
         //untuk mengecek yang muncul popup mulai kegiatan atau selesai
         if (catatannya!=null&&catatannya.equalsIgnoreCase("Anda Tidak memasukan Catatan")){
             linearLayout.setVisibility(View.GONE);
@@ -107,7 +129,13 @@ public class PopupActivity extends AppCompatActivity implements OnMapReadyCallba
             jeda.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    savePencapaian();
+                }
+            });
+            tutup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
                 }
             });
         }else if (catatannya==null){
@@ -134,6 +162,19 @@ public class PopupActivity extends AppCompatActivity implements OnMapReadyCallba
 
 
 
+    }
+    private void savePencapaian(){
+        submitPencapaian(new Pencapaian(kegiatan,tglKgt,catatannya,lat,lang));
+    }
+    private void submitPencapaian(Pencapaian pencapaian) {
+        database.child(Uid.toString()).push().setValue(pencapaian).addOnSuccessListener(this, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Message.message(getApplicationContext(), "Berhasil Menyimpan Kegiatan");
+                startActivity(new Intent(PopupActivity.this, LihatPencapaianActivity.class));
+                finish();
+            }
+        });
     }
 
     @Override
