@@ -135,13 +135,13 @@ public class tentang extends AppCompatActivity {
             Fragment fragment =null;
             switch (position){
                 case 1 :
-                    Fragment1 frag1 = new Fragment1();
+                    FragmentTentangKamiYoga frag1 = new FragmentTentangKamiYoga();
                     break;
                 case 2:
-                    Fragment2 frag2 = new Fragment2();
+                    FragmentTentangKamiSilfi frag2 = new FragmentTentangKamiSilfi();
                     break;
                 case 3:
-                    Fragment3 frag3 = new Fragment3();
+                    FragmentTentangKamiSyifa frag3 = new FragmentTentangKamiSyifa();
 
             }
             return fragment;
