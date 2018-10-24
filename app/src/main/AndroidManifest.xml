@@ -28,8 +28,10 @@
         <activity
             android:name=".TambahKegiatanActivity"
             android:label="Tambah Kegiatan" />
-        <activity android:name=".LihatKegiatanActivity" />
-        <activity android:name=".RincianKegiatanActivity" />
+        <activity android:name=".LihatKegiatanActivity"
+            android:label="Lihat Kegiatan"/>
+        <activity android:name=".RincianKegiatanActivity"
+            android:label="Rincian Kegiatan"/>
         <activity android:name=".PopupActivity" />
         <activity
             android:name=".TentangKamiActivity"
@@ -43,7 +45,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".tentang"
-            android:label="@string/title_activity_tentang"
+            android:label="Tentang Kami"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".ProfileActivity"
+            android:label="Profile"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

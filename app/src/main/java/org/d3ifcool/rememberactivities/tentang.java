@@ -3,6 +3,7 @@ package org.d3ifcool.rememberactivities;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -135,15 +136,18 @@ public class tentang extends AppCompatActivity {
             Fragment fragment =null;
             switch (position){
                 case 1 :
-                    FragmentTentangKamiYoga frag1 = new FragmentTentangKamiYoga();
+                    fragment = new FragmentTentangKamiYoga();
                     break;
                 case 2:
-                    FragmentTentangKamiSilfi frag2 = new FragmentTentangKamiSilfi();
+                     fragment = new FragmentTentangKamiSilfi();
                     break;
                 case 3:
-                    FragmentTentangKamiSyifa frag3 = new FragmentTentangKamiSyifa();
+                    fragment = new FragmentTentangKamiSyifa();
 
             }
+            FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.main_content,fragment);
+            ft.commit();
             return fragment;
         }
 

@@ -15,12 +15,12 @@
     android:layout_weight="2">
     <TextView
         android:id="@+id/textGrid"
-        android:text="Remember Activities"
+        android:text="@string/remember_activities"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
+        android:textSize="24sp"
         android:layout_centerInParent="true"
-        android:textColor="@color/Black"/>
+        android:textColor="@android:color/white"/>
 </RelativeLayout>
     <GridLayout
         android:columnCount="2"
@@ -43,8 +43,6 @@
             app:cardBackgroundColor="#FFFF"
             app:cardElevation="8dp"
             app:cardCornerRadius="8dp"
-
-
             >
             <LinearLayout
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -53,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@drawable/tambah"
+                    android:src="@drawable/ic_addd"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="50dp"
                     android:layout_height="50dp" />
@@ -88,12 +86,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@drawable/kegiatan"
+                    android:src="@drawable/ic_view"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="50dp"
                     android:layout_height="50dp" />
                 <TextView
-                    android:text="Lihat Kegiatan"
+                    android:text="@string/lihat_kegiatan"
                     android:gravity="center"
                     android:textColor="@color/Black"
                     android:textSize="16sp"
@@ -123,12 +121,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@drawable/pencapain"
+                    android:src="@drawable/ic_pencapaian2"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="50dp"
                     android:layout_height="50dp" />
                 <TextView
-                    android:text="Lihat Pencapaian"
+                    android:text="@string/lihat_pencapaian"
                     android:gravity="center"
                     android:textColor="@color/Black"
                     android:textSize="16sp"
@@ -158,12 +156,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@drawable/tentangkami"
+                    android:src="@drawable/ic_about"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="50dp"
                     android:layout_height="50dp" />
                 <TextView
-                    android:text="Tentang Kami"
+                    android:text="@string/tentang_kami"
                     android:id="@+id/tentangKamikami"
                     android:gravity="center"
                     android:textColor="@color/Black"
@@ -175,7 +173,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/umpanbalik"
+            android:id="@+id/home_profile"
             android:layout_width="75dp"
             android:layout_height="125dp"
             android:layout_columnWeight="1"
@@ -194,12 +192,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@drawable/ic_personn"
+                    android:src="@drawable/ic_profile"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="50dp"
                     android:layout_height="50dp" />
                 <TextView
-                    android:text="Profil"
+                    android:text=" Profil"
                     android:gravity="center"
                     android:textColor="@color/Black"
                     android:textSize="16sp"
@@ -209,7 +207,7 @@
             </LinearLayout>
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
-            android:id="@+id/keluar"
+            android:id="@+id/umpanBalik"
             android:layout_width="75dp"
             android:layout_height="125dp"
             android:layout_columnWeight="1"
@@ -228,12 +226,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:src="@drawable/alarm2"
+                    android:src="@drawable/ic_tentang"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="50dp"
                     android:layout_height="50dp" />
                 <TextView
-                    android:text="Keluar"
+                    android:text="Umpan Balik"
                     android:gravity="center"
                     android:textColor="@color/Black"
                     android:textSize="16sp"

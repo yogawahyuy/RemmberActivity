@@ -147,7 +147,7 @@ public class TambahKegiatanActivity extends AppCompatActivity{
 
 
         if (getIntent().getSerializableExtra("datakegiatan") == null) {
-            setTitle(R.string.tambah_kegiatan);
+            setTitle("Tambah Kegiatan");
             invalidateOptionsMenu();
         } else {
             setTitle(R.string.edit_kegiatan);

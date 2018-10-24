@@ -5,14 +5,21 @@
     <string name="masuk">Masuk</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
-    <string name="remember_activities">Remember Activities</string>
+
     <string name="action_settings">Settings</string>
     <string name="title_activity_pencapain_detail">Detail Pencapaian</string>
-    <string name="tambah_kegiatan">Tambah Kegiatan</string>
+
     <string name="edit_kegiatan">Edit Kegiatan</string>
     <string name="title_activity_tentang">tentang</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="google_maps_key">AIzaSyBjgH53cqYuapvN0osp6WwBqyoqES06i3E</string>
+    <string name="remember_activities">Remember Activities</string>
+
+    <string name="lihat_kegiatan">Lihat Kegiatan</string>
+    <string name="lihat_pencapaian">Lihat Pencapaian</string>
+    <string name="tentang_kami">Tentang Kami</string>
+    <string name="profil"> Profil</string>
+    <string name="keluar">Keluar</string>
 
 
 </resources>

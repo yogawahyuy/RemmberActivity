@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class HomeActivity extends AppCompatActivity {
 
 
-    CardView cardView,kegiatan,pencapaian,logout,tentangkami;
+    CardView cardView,kegiatan,pencapaian,umpan,tentangkami,profile;
 
     private FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -33,17 +33,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //untuk mengilangkan toolbar
-//        if (Build.VERSION.SDK_INT < 16) {
-//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        }else {
-//            View decorView=getWindow().getDecorView();
-//            int uiOption=View.SYSTEM_UI_FLAG_FULLSCREEN;
-//            decorView.setSystemUiVisibility(uiOption);
-//            android.app.ActionBar actionBar=getActionBar();
-//            actionBar.hide();
-//        }
         setContentView(R.layout.activity_home);
         cardView=findViewById(R.id.tambah);
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -60,11 +49,15 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(HomeActivity.this,LihatKegiatanActivity.class));
             }
         });
-        logout=findViewById(R.id.keluar);
-        logout.setOnClickListener(new View.OnClickListener() {
+        umpan=findViewById(R.id.umpanBalik);
+        umpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signOut();
+//                signOut();
+                String url="https://bit.ly/2HtQbc9";
+                Intent i=new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
             }
         });
         pencapaian=findViewById(R.id.lihatpencapaian);
@@ -82,23 +75,13 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(HomeActivity.this,tentang.class));
             }
         });
-//        tambah = (FloatingActionButton)findViewById(R.id.floatingActionButton);
-//        tambah.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(HomeActivity.this,TambahKegiatanActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//        pencapaian = (FloatingActionButton)findViewById(R.id.floatingActionButton3);
-//        pencapaian.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent2 = new Intent(HomeActivity.this,LihatPencapaianActivity.class);
-//                startActivity(intent2);
-//            }
-//        });
-
+        profile=findViewById(R.id.home_profile);
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeActivity.this,ProfileActivity.class));
+            }
+        });
 
         mFirebaseAuth=FirebaseAuth.getInstance();
 
@@ -119,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
         mFirebaseAuth.addAuthStateListener(mAuthListener);
     }
 
-    //method logout
+    //method umpan
     private void signOut() {
         // Firebase sign out
         mFirebaseAuth.signOut();
@@ -134,30 +117,5 @@ public class HomeActivity extends AppCompatActivity {
       return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.lihatKegiatan:
-                startActivity(new Intent(HomeActivity.this,LihatKegiatanActivity.class));
-                break;
-            case R.id.tentangKami:
-                startActivity(new Intent(HomeActivity.this,TentangKamiActivity.class));
-                break;
-            case R.id.umpanBalik:
-                String url="https://bit.ly/2HtQbc9";
-                Intent i=new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-                break;
-            case R.id.profil:
-                startActivity(new Intent(HomeActivity.this, TentangKamiActivity.class));
-                break;
-            case R.id.logout:
-                signOut();
-                break;
 
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
