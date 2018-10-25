@@ -80,6 +80,8 @@ public class TambahKegiatanActivity extends AppCompatActivity{
     private DatabaseReference database;
     private FirebaseUser mfirebaseUser;
     String email;
+    int idKegiatan;
+    String cekIntent;
     double lang,lat;
     Kegiatan kegiatan;
     int PLACE_PICKER_REQUEST=1;
@@ -144,8 +146,8 @@ public class TambahKegiatanActivity extends AppCompatActivity{
             }
         });
 
-
-
+        idKegiatan=getIntent().getIntExtra("id",0);
+        Log.e("cek id", "onCreate: "+idKegiatan );
         if (getIntent().getSerializableExtra("datakegiatan") == null) {
             setTitle("Tambah Kegiatan");
             invalidateOptionsMenu();
@@ -159,6 +161,7 @@ public class TambahKegiatanActivity extends AppCompatActivity{
             jamBrakhir.setText(kegiatan.getBerakhirKegiatan());
             tempat.setText(kegiatan.getTempatKegiatan());
             catatan.setText(kegiatan.getCatatanKegiatan());
+
         }
         newMydbHelper = new DBHelper(this);
 
@@ -435,33 +438,63 @@ public class TambahKegiatanActivity extends AppCompatActivity{
 
         //disini terdapat algoritma untuk menambahkan alaram
       private void setAlarm(Calendar target){
-          Intent intent=new Intent(TambahKegiatanActivity.this,AlarmRecivier.class);
-          intent.putExtra("id",daftarKegiatan.size()-1);
-          intent.putExtra("kegiatan",daftarKegiatan.get(daftarKegiatan.size()-1).getNamaKegiatan());
-          intent.putExtra("jam",daftarKegiatan.get(daftarKegiatan.size()-1).getJamKegiatan());
-          intent.putExtra("lat",daftarKegiatan.get(daftarKegiatan.size()-1).getLat());
-          intent.putExtra("lang",daftarKegiatan.get(daftarKegiatan.size()-1).getLang());
-          PendingIntent pendingIntent=PendingIntent.getBroadcast(getBaseContext(),daftarKegiatan.size()-1,intent,0);
-          AlarmManager alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
-          alarmManager.set(AlarmManager.RTC_WAKEUP,target.getTimeInMillis(),pendingIntent);
-
+          //untuk tambah kegiatan
+          if (getIntent().getSerializableExtra("datakegiatan") == null) {
+              Intent intent = new Intent(TambahKegiatanActivity.this, AlarmRecivier.class);
+              intent.putExtra("id", daftarKegiatan.size() - 1);
+              intent.putExtra("kegiatan", daftarKegiatan.get(daftarKegiatan.size() - 1).getNamaKegiatan());
+              intent.putExtra("jam", daftarKegiatan.get(daftarKegiatan.size() - 1).getJamKegiatan());
+              intent.putExtra("lat", daftarKegiatan.get(daftarKegiatan.size() - 1).getLat());
+              intent.putExtra("lang", daftarKegiatan.get(daftarKegiatan.size() - 1).getLang());
+              PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), daftarKegiatan.size() - 1, intent, 0);
+              AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+              alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
+          }else{
+              // untuk edit kegiatan
+              Intent intent = new Intent(TambahKegiatanActivity.this, AlarmRecivier.class);
+              intent.putExtra("id", daftarKegiatan.size() - 1);
+              intent.putExtra("kegiatan", daftarKegiatan.get(daftarKegiatan.size() - 1).getNamaKegiatan());
+              intent.putExtra("jam", daftarKegiatan.get(daftarKegiatan.size() - 1).getJamKegiatan());
+              intent.putExtra("lat", daftarKegiatan.get(daftarKegiatan.size() - 1).getLat());
+              intent.putExtra("lang", daftarKegiatan.get(daftarKegiatan.size() - 1).getLang());
+              PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), idKegiatan, intent, 0);
+              AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+              alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
+          }
     }
 
     private void setAlarmselesai(Calendar target){
-        Intent intent=new Intent(TambahKegiatanActivity.this,SecondAlarmRecivier.class);
-        intent.putExtra("id",daftarKegiatan.size()-1);
-        intent.putExtra("id",daftarKegiatan.size()-1);
-        intent.putExtra("kegiatan",daftarKegiatan.get(daftarKegiatan.size()-1).getNamaKegiatan());
-        intent.putExtra("jam",daftarKegiatan.get(daftarKegiatan.size()-1).getJamKegiatan());
-        intent.putExtra("lat",daftarKegiatan.get(daftarKegiatan.size()-1).getLat());
-        intent.putExtra("lang",daftarKegiatan.get(daftarKegiatan.size()-1).getLang());
-        intent.putExtra("catatan",daftarKegiatan.get(daftarKegiatan.size()-1).getCatatanKegiatan());
-        intent.putExtra("jamselesai",daftarKegiatan.get(daftarKegiatan.size()-1).getBerakhirKegiatan());
-        intent.putExtra("tgl",daftarKegiatan.get(daftarKegiatan.size()-1).getTglKegiatan());
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(getBaseContext(),daftarKegiatan.size()-1,intent,0);
-        AlarmManager alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,target.getTimeInMillis(),pendingIntent);
-
+          //untuk tambah kegiatan
+        if (getIntent().getSerializableExtra("datakegiatan") == null) {
+            Intent intent = new Intent(TambahKegiatanActivity.this, SecondAlarmRecivier.class);
+            intent.putExtra("id", daftarKegiatan.size() - 1);
+            intent.putExtra("id", daftarKegiatan.size() - 1);
+            intent.putExtra("kegiatan", daftarKegiatan.get(daftarKegiatan.size() - 1).getNamaKegiatan());
+            intent.putExtra("jam", daftarKegiatan.get(daftarKegiatan.size() - 1).getJamKegiatan());
+            intent.putExtra("lat", daftarKegiatan.get(daftarKegiatan.size() - 1).getLat());
+            intent.putExtra("lang", daftarKegiatan.get(daftarKegiatan.size() - 1).getLang());
+            intent.putExtra("catatan", daftarKegiatan.get(daftarKegiatan.size() - 1).getCatatanKegiatan());
+            intent.putExtra("jamselesai", daftarKegiatan.get(daftarKegiatan.size() - 1).getBerakhirKegiatan());
+            intent.putExtra("tgl", daftarKegiatan.get(daftarKegiatan.size() - 1).getTglKegiatan());
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), daftarKegiatan.size() - 1, intent, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
+        }else {
+            //untuk edit kegiatan
+            Intent intent = new Intent(TambahKegiatanActivity.this, SecondAlarmRecivier.class);
+            intent.putExtra("id", daftarKegiatan.size() - 1);
+            intent.putExtra("id", daftarKegiatan.size() - 1);
+            intent.putExtra("kegiatan", daftarKegiatan.get(daftarKegiatan.size() - 1).getNamaKegiatan());
+            intent.putExtra("jam", daftarKegiatan.get(daftarKegiatan.size() - 1).getJamKegiatan());
+            intent.putExtra("lat", daftarKegiatan.get(daftarKegiatan.size() - 1).getLat());
+            intent.putExtra("lang", daftarKegiatan.get(daftarKegiatan.size() - 1).getLang());
+            intent.putExtra("catatan", daftarKegiatan.get(daftarKegiatan.size() - 1).getCatatanKegiatan());
+            intent.putExtra("jamselesai", daftarKegiatan.get(daftarKegiatan.size() - 1).getBerakhirKegiatan());
+            intent.putExtra("tgl", daftarKegiatan.get(daftarKegiatan.size() - 1).getTglKegiatan());
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), idKegiatan, intent, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
+        }
     }
     }
 

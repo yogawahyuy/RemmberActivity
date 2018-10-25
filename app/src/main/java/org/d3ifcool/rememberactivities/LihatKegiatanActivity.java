@@ -85,6 +85,8 @@ public class LihatKegiatanActivity extends AppCompatActivity{
                         Log.d("lihat kegiatan", "onItemClick: click");
                       Intent intent=new Intent(LihatKegiatanActivity.this,RincianKegiatanActivity.class);
                       intent.putExtra("data",daftarKegiatan.get(posisi));
+                      intent.putExtra("id",posisi);
+                        Log.e("onclick lihat", "onItemClick: "+daftarKegiatan.get(posisi) );
                       startActivity(intent);
                     }
                 });
