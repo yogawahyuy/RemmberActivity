@@ -26,6 +26,7 @@ public class AdapterLihatKegiatan extends RecyclerView.Adapter<AdapterLihatKegia
     private ArrayList<Kegiatan> daftarKegiatan;
     private Context context;
     private ArrayList<Integer> mSelectedId;
+    private View mEmptyView;
 
 
     public interface ClickHandler{
@@ -36,14 +37,13 @@ public class AdapterLihatKegiatan extends RecyclerView.Adapter<AdapterLihatKegia
         void onDeleteData(Kegiatan kegiatan,int posisi);
     }
 
-    public AdapterLihatKegiatan(ArrayList<Kegiatan> kegiatans,Context ctx,ClickHandler handler){
+    public AdapterLihatKegiatan(ArrayList<Kegiatan> kegiatans,Context ctx,View emptyview,ClickHandler handler){
         daftarKegiatan=kegiatans;
         context=ctx;
         clickHandler=handler;
         mSelectedId=new ArrayList<>();
+        mEmptyView=emptyview;
     }
-
-
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView jam,nama,tgl;

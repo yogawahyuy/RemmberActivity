@@ -1,6 +1,7 @@
 package org.d3ifcool.rememberactivities;
 
 import android.app.LoaderManager;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -34,9 +35,8 @@ import org.d3ifcool.rememberactivities.Model.Kegiatan;
 
 import java.util.ArrayList;
 
-public class LihatKegiatanActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final  int MY_LOADER=0;
-    private AdapterLihatKegiatan mCursorAdapter;
+public class LihatKegiatanActivity extends AppCompatActivity{
+    private AdapterLihatKegiatan mAdapter;
     private FirebaseUser mFireBaseuser;
 
     private DatabaseReference database;
@@ -44,7 +44,8 @@ public class LihatKegiatanActivity extends AppCompatActivity implements LoaderMa
     private RecyclerView.Adapter adapter;
     private LinearLayoutManager layoutManager;
     private ArrayList<Kegiatan> daftarKegiatan;
-
+    View mEmptyView;
+    ProgressDialog progressDialog;
     String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,9 @@ public class LihatKegiatanActivity extends AppCompatActivity implements LoaderMa
         DividerItemDecoration divider = new DividerItemDecoration(this,
                 layoutManager.getOrientation());
         rvView.addItemDecoration(divider);
+        mEmptyView=findViewById(R.id.emptyview_kegiatan);
+        daftarKegiatan=new ArrayList<>();
+        progressDialog=ProgressDialog.show(LihatKegiatanActivity.this,"Sedang Mengambil Kegiatan Anda","Harap Tunggu",false,false);
 
 
         //database
@@ -69,13 +73,13 @@ public class LihatKegiatanActivity extends AppCompatActivity implements LoaderMa
         database.child(email.toString()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                daftarKegiatan=new ArrayList<>();
+                progressDialog.dismiss();
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()){
                     Kegiatan kegiatan=noteDataSnapshot.getValue(Kegiatan.class);
                     kegiatan.setKey(noteDataSnapshot.getKey());
                     daftarKegiatan.add(kegiatan);
                 }
-                adapter=new AdapterLihatKegiatan(daftarKegiatan, LihatKegiatanActivity.this, new AdapterLihatKegiatan.ClickHandler() {
+                adapter=new AdapterLihatKegiatan(daftarKegiatan, LihatKegiatanActivity.this,mEmptyView,new AdapterLihatKegiatan.ClickHandler() {
                     @Override
                     public void onItemClick(int posisi) {
                         Log.d("lihat kegiatan", "onItemClick: click");
@@ -85,6 +89,7 @@ public class LihatKegiatanActivity extends AppCompatActivity implements LoaderMa
                     }
                 });
                 rvView.setAdapter(adapter);
+                updateEmptyView();
             }
 
             @Override
@@ -93,68 +98,18 @@ public class LihatKegiatanActivity extends AppCompatActivity implements LoaderMa
             }
         });
 
-//        ListView lis=(ListView)findViewById(R.id.listView_kegiatan);
-//        mCursorAdapter=new AdapterLihatKegiatan(this,null);
-//        View emptyView=findViewById(R.id.emptyview);
-//        lis.setEmptyView(emptyView);
-//        mCursorAdapter=new AdapterLihatKegiatan(this,null);
-//        lis.setAdapter(mCursorAdapter);
-//        lis.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent=new Intent(LihatKegiatanActivity.this,RincianKegiatanActivity.class);
-//                Uri currentUri= ContentUris.withAppendedId(RememberActivitiesContract.myContractEntry.CONTENT_URI,id);
-//                intent.setData(currentUri);
-//                startActivity(intent);
-//            }
-//        });
-//
-//
-//        getLoaderManager().initLoader(MY_LOADER,null,this);
+
+
+
     }
 
+    public void updateEmptyView(){
+        if (daftarKegiatan.size()==0){
+            mEmptyView.setVisibility(View.VISIBLE);
+        }else {
+            mEmptyView.setVisibility(View.GONE);
 
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection={
-                RememberActivitiesContract.myContractEntry.UID,
-                RememberActivitiesContract.myContractEntry.NAME,
-                RememberActivitiesContract.myContractEntry.tgl_mulai,
-        };
-        return new CursorLoader(this,RememberActivitiesContract.myContractEntry.CONTENT_URI,projection,null,null,null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        //mCursorAdapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        //mCursorAdapter.swapCursor(null);
-    }
-
-    private class viewAdapter extends BaseAdapter{
-
-        @Override
-        public int getCount() {
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return null;
         }
     }
-}
+    }
+
