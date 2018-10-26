@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="400dp"
         >
         <LinearLayout
             android:background="@color/colorMain"
@@ -17,10 +17,10 @@
             android:layout_height="700dp"
             android:orientation="vertical">
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="125dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:src="@drawable/kotao"
                 android:id="@+id/photosEmail"
                 />
@@ -33,7 +33,7 @@
                 android:text="Silfi Nur Amalia"
                 android:textColor="#ffff"
                 android:textStyle="bold"
-                android:paddingTop="30dp"
+                android:paddingTop="20dp"
                 android:textSize="20sp"/>
 
         </LinearLayout>
@@ -48,7 +48,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+
+            android:paddingLeft="10dp"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
@@ -75,7 +76,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="20dp"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
@@ -87,34 +89,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="nurasysyifauiffsudur@mgail.com"
-                android:paddingLeft="20dp"/>
+                android:paddingLeft="15dp"/>
         </LinearLayout>
 
+
     </LinearLayout>
+
     <LinearLayout
-        android:gravity="center"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         >
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingTop="10dp"
             >
+
             <Button
                 android:id="@+id/keluar"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorMain"
                 android:text="Keluar"
                 android:textColor="@android:color/white"
+                android:background="@color/colorMain"
                 />
         </LinearLayout>
 
-    </LinearLayout>
-
-
+</LinearLayout>
 
 </LinearLayout>

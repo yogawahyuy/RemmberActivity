@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".TentangYoga">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -10,24 +13,27 @@
         <LinearLayout
             android:background="@color/colorMain"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="350dp"
             android:orientation="vertical">
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:src="@drawable/kotao"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/yoga"
+                android:id="@+id/photosEmail"
                 />
             <TextView
+
+                android:id="@+id/namaAtas"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Silfi Nur Amalia"
+                android:text="Yoga Wahyu Yuwono"
                 android:textColor="#ffff"
                 android:textStyle="bold"
-                android:paddingTop="10dp"
-                android:textSize="21sp"/>
+                android:paddingTop="20dp"
+                android:textSize="20sp"/>
 
         </LinearLayout>
 
@@ -37,22 +43,50 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="15dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="25dp"
+            android:padding="10dp"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_orang"/>
             <TextView
+                android:id="@+id/namaBawah"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Silfi Nur Amalia"
-                android:paddingLeft="30dp"/>
+                android:text="Yoga Wahyu Yuwono"
+                android:paddingLeft="15dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_number"/>
+            <TextView
+                android:id="@+id/number"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="081578980166"
+                android:paddingLeft="15dp"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -65,21 +99,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="25dp"
+            android:padding="10dp"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_emaili"/>
             <TextView
+                android:id="@+id/emailProfile"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="silfiamalia344@gmail.com"
-                android:paddingLeft="30dp"/>
+                android:text="yogawahyuy@gmail.com"
+                android:paddingLeft="15dp"/>
         </LinearLayout>
 
     </LinearLayout>
-
-
 </LinearLayout>
