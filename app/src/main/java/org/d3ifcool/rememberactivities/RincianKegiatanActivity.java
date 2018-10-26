@@ -31,6 +31,7 @@ public class RincianKegiatanActivity extends AppCompatActivity implements OnMapR
     private FirebaseUser mFirebaseUser;
     private DatabaseReference database;
     String uid;
+    int id;
     Kegiatan kegiatan;
     private TextView namaKgt,tglKgt,jamMulai,jamBerakhir,catatan,tempat;
 
@@ -52,7 +53,7 @@ public class RincianKegiatanActivity extends AppCompatActivity implements OnMapR
         mFirebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         database= FirebaseDatabase.getInstance().getReference("Kegiatan");
         uid=mFirebaseUser.getUid();
-
+        id=getIntent().getIntExtra("id",0);
         kegiatan=(Kegiatan) getIntent().getSerializableExtra("data");
         if (kegiatan!=null){
             namaKgt.setText(kegiatan.getNamaKegiatan());
@@ -79,6 +80,7 @@ public class RincianKegiatanActivity extends AppCompatActivity implements OnMapR
             case R.id.rincian_edit_kegiatan:
                 Intent intent=new Intent(RincianKegiatanActivity.this,TambahKegiatanActivity.class);
                 intent.putExtra("datakegiatan",getIntent().getSerializableExtra("data"));
+                intent.putExtra("id",id);
                 startActivity(intent);
                 break;
             case R.id.rincian_hapus_kegiatan:
@@ -130,15 +132,4 @@ public class RincianKegiatanActivity extends AppCompatActivity implements OnMapR
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
-//    @Override
-//    public void onDeleteData(Kegiatan kegiatan, int posisi) {
-//        if (database!=null){
-//            database.child(uid.toString()).child(kegiatan.getKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-//                @Override
-//                public void onSuccess(Void aVoid) {
-//                    Message.message(getApplicationContext(),"Kegiatan Berhasil dihapus");
-//                }
-//            });
-//        }
-//    }
 }

@@ -26,12 +26,14 @@ public class AdapterPencapaian extends RecyclerView.Adapter<AdapterPencapaian.Vi
     private ArrayList<Pencapaian> daftarPencapaian;
     private Context context;
     private ArrayList<Integer> mSelectedId;
+    private View emptyView;
 
-    public AdapterPencapaian(ArrayList<Pencapaian> kegiatans, Context ctx, AdapterPencapaian.ClickHandler handler){
+    public AdapterPencapaian(ArrayList<Pencapaian> kegiatans, Context ctx, View empty,AdapterPencapaian.ClickHandler handler){
         daftarPencapaian=kegiatans;
         context=ctx;
         clickHandler=handler;
         mSelectedId=new ArrayList<>();
+        emptyView=empty;
     }
 
     @NonNull

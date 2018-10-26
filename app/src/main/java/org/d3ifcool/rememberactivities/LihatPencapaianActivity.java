@@ -1,5 +1,6 @@
 package org.d3ifcool.rememberactivities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
@@ -37,6 +38,8 @@ public class LihatPencapaianActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private LinearLayoutManager layoutManager;
     private ArrayList<Pencapaian> daftarPencapaian;
+    private View mEmptyView;
+    ProgressDialog progressDialog;
     String Uid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,10 @@ public class LihatPencapaianActivity extends AppCompatActivity {
         DividerItemDecoration divider = new DividerItemDecoration(this,
                 layoutManager.getOrientation());
         rvView.addItemDecoration(divider);
+        mEmptyView=findViewById(R.id.emptyview_pencapaian);
+        daftarPencapaian=new ArrayList<>();
+        progressDialog=ProgressDialog.show(LihatPencapaianActivity.this,"Sedang Mengambil Pencapaian Anda","Harap Tunggu",false,false);
+
 
         mFireBaseuser= FirebaseAuth.getInstance().getCurrentUser();
         database= FirebaseDatabase.getInstance().getReference("Pencapaian");
@@ -59,13 +66,13 @@ public class LihatPencapaianActivity extends AppCompatActivity {
         database.child(Uid.toString()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                daftarPencapaian=new ArrayList<>();
+                progressDialog.dismiss();
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()){
                     Pencapaian pencapaian=noteDataSnapshot.getValue(Pencapaian.class);
                     pencapaian.setKeyPencapaian(noteDataSnapshot.getKey());
                     daftarPencapaian.add(pencapaian);
                 }
-                adapter=new AdapterPencapaian(daftarPencapaian, LihatPencapaianActivity.this, new AdapterPencapaian.ClickHandler() {
+                adapter=new AdapterPencapaian(daftarPencapaian, LihatPencapaianActivity.this,mEmptyView, new AdapterPencapaian.ClickHandler() {
                     @Override
                     public void onItemClick(int posisi) {
                         Log.d("lihat kegiatan", "onItemClick: click");
@@ -75,6 +82,7 @@ public class LihatPencapaianActivity extends AppCompatActivity {
                     }
                 });
                 rvView.setAdapter(adapter);
+                updateEmptyView();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -83,6 +91,14 @@ public class LihatPencapaianActivity extends AppCompatActivity {
         });
 
 
+    }
+    public void updateEmptyView(){
+        if (daftarPencapaian.size()==0){
+            mEmptyView.setVisibility(View.VISIBLE);
+        }else {
+            mEmptyView.setVisibility(View.GONE);
+
+        }
     }
 }
 

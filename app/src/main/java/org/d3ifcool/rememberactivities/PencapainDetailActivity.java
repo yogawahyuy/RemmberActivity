@@ -1,6 +1,7 @@
 package org.d3ifcool.rememberactivities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,6 +23,7 @@ public class PencapainDetailActivity extends AppCompatActivity {
     private DatabaseReference database;
     String uid;
     Pencapaian pencapaian;
+    String namaUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class PencapainDetailActivity extends AppCompatActivity {
         mFirebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         database= FirebaseDatabase.getInstance().getReference("Pencapaian");
         uid=mFirebaseUser.getUid();
+        namaUser=mFirebaseUser.getDisplayName();
 
         pencapaian=(Pencapaian) getIntent().getSerializableExtra("data");
         if (pencapaian!=null){
@@ -52,9 +55,27 @@ public class PencapainDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Bagikan melalui email", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                String messeage=emailBody(pencapaian.getCatatanPencapaian(),pencapaian.getNamaPencapaian(),pencapaian.getTgl_pencapain());
+                Intent intent=new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:"));
+                intent.putExtra(Intent.EXTRA_SUBJECT,"Pencapaaian Kegiatan yang dilakukan oleh "+namaUser);
+                intent.putExtra(Intent.EXTRA_TEXT,messeage);
+                if (intent.resolveActivity(getPackageManager())!=null){
+                    startActivity(intent);
+                }
             }
         });
+    }
+
+    private String emailBody(String pencapaian,String namaKgt,String tgl){
+        String isiEmail= "Pencapaaian yang sudah dilakukan oleh :"+namaUser;
+        isiEmail +="\n Pencapaian       :"+pencapaian;
+        isiEmail +="\n Nama Kegiatan    :"+namaKgt;
+        isiEmail +="\n Tanggal Kegiatan :"+tgl;
+        isiEmail +="\n";
+        isiEmail +="\n";
+        isiEmail +="\n Email Ini dibuat otomatis oleh aplikasi RememberActivities";
+
+        return isiEmail;
     }
 }
