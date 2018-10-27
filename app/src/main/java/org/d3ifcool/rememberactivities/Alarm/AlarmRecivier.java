@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.icu.util.Calendar;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -53,6 +54,8 @@ public class AlarmRecivier extends BroadcastReceiver {
         builder.setColor(ContextCompat.getColor(context,R.color.colorAccent));
         builder.setContentTitle(context.getString(R.string.app_name));
         builder.setContentText(kegiatan);
+        builder.setVibrate(new long[]{1000,500,1000,500,1000,500});
+        builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         builder.setContentIntent(pendingIntent);
         builder.setPriority(Notification.PRIORITY_HIGH);
         manager.notify(id,builder.build());

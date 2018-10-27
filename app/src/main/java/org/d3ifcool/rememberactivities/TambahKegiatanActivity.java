@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
@@ -89,6 +90,7 @@ public class TambahKegiatanActivity extends AppCompatActivity{
     Calendar calSet,calSetSelesai;
     private FirebaseUser mFireBaseuser;
     private ArrayList<Kegiatan> daftarKegiatan;
+    ConnectivityManager connectivityManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,17 +210,21 @@ public class TambahKegiatanActivity extends AppCompatActivity{
 
     private void tambahData(){
         //get email
+        connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getActiveNetwork()!=null && connectivityManager.getActiveNetworkInfo().isAvailable()&& connectivityManager.getActiveNetworkInfo().isConnected()) {
+            if (!isEmpty(namaKgt.getText().toString()) && !isEmpty(tglKgt.getText().toString()) && !isEmpty(jamMulai.getText().toString()) && !isEmpty(jamBrakhir.getText().toString())) {
+                if (isEmpty(catatan.getText().toString())) {
+                    String tempCatat = "Anda Tidak memasukan Catatan";
+                    submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(), lang, lat, tempCatat, email));
 
-        if (!isEmpty(namaKgt.getText().toString())&& !isEmpty(tglKgt.getText().toString()) && !isEmpty(jamMulai.getText().toString()) && !isEmpty(jamBrakhir.getText().toString())) {
-            if (isEmpty(catatan.getText().toString())) {
-                String tempCatat = "Anda Tidak memasukan Catatan";
-                submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(),lang,lat, tempCatat, email));
-
+                } else {
+                    submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(), lang, lat, catatan.getText().toString(), email));
+                }
             } else {
-                submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(),lang,lat,catatan.getText().toString(),email));
+                Message.message(this, "Terdapat Field yang Kosong");
             }
         }else{
-            Message.message(this,"Terdapat Field yang Kosong");
+            Message.message(this,"Mohon Periksa Koneksi Anda");
         }
     }
 

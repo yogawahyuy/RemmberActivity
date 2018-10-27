@@ -82,6 +82,7 @@ public class RincianKegiatanActivity extends AppCompatActivity implements OnMapR
                 intent.putExtra("datakegiatan",getIntent().getSerializableExtra("data"));
                 intent.putExtra("id",id);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.rincian_hapus_kegiatan:
                 dialoghapusKegiatan();
@@ -97,6 +98,7 @@ public class RincianKegiatanActivity extends AppCompatActivity implements OnMapR
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 deleteKegiatan();
+                finish();
             }
         });
         builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
@@ -118,7 +120,7 @@ public class RincianKegiatanActivity extends AppCompatActivity implements OnMapR
                 public void onSuccess(Void aVoid) {
                     Message.message(getApplicationContext(),"Kegiatan Berhasil dihapus");
                     startActivity(new Intent(RincianKegiatanActivity.this,LihatKegiatanActivity.class));
-                    finish();
+
                 }
             });
         }

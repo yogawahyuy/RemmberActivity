@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
@@ -33,7 +34,9 @@ public class SecondAlarmRecivier extends BroadcastReceiver {
         builder.setSmallIcon(R.drawable.logoooo);
         builder.setColor(ContextCompat.getColor(context,R.color.colorAccent));
         builder.setContentTitle(context.getString(R.string.app_name));
-        builder.setContentText("Second alarm recivier");
+        builder.setContentText(kegiatan);
+        builder.setVibrate(new long[]{1000,500,1000,500,1000,500});
+        builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         builder.setContentIntent(pendingIntent);
         builder.setPriority(Notification.PRIORITY_HIGH);
         manager.notify(id,builder.build());
