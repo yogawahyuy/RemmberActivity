@@ -107,8 +107,7 @@ public class TambahKegiatanActivity extends AppCompatActivity{
         //untuk on click listener
         tglKgt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                tanggalKegiatan();
+            public void onClick(View v) { tglKgt(v);
             }
         });
         jamMulai.setOnClickListener(new View.OnClickListener() {
@@ -354,25 +353,7 @@ public class TambahKegiatanActivity extends AppCompatActivity{
 
       private void tanggalKegiatan(){
 
-        tglKgt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Calendar c= Calendar.getInstance();
-                 mYear=c.get(Calendar.YEAR);
-                 mMonth=c.get(Calendar.MONTH);
-                 mDay=c.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog=new DatePickerDialog(TambahKegiatanActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        tglKgt.setText(year+"-"+(month+1)+"-"+day);
-                        tahun=year;
-                        bulan=month;
-                        hari=day;
-                    }
-                },mYear,mMonth,mDay);
-                datePickerDialog.show();
-            }
-        });
+
 
     }
     private void setjamMulai(boolean is24){
@@ -496,5 +477,27 @@ public class TambahKegiatanActivity extends AppCompatActivity{
             alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
         }
     }
+
+    public void tglKgt(View view) {
+        tglKgt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar c= Calendar.getInstance();
+                mYear=c.get(Calendar.YEAR);
+                mMonth=c.get(Calendar.MONTH);
+                mDay=c.get(Calendar.DAY_OF_MONTH);
+                datePickerDialog=new DatePickerDialog(TambahKegiatanActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        tglKgt.setText(year+"-"+(month+1)+"-"+day);
+                        tahun=year;
+                        bulan=month;
+                        hari=day;
+                    }
+                },mYear,mMonth,mDay);
+                datePickerDialog.show();
+            }
+        });
     }
+}
 

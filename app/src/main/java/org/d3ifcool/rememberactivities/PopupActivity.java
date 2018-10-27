@@ -33,6 +33,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -181,7 +182,8 @@ public class PopupActivity extends AppCompatActivity implements OnMapReadyCallba
     public void onMapReady(GoogleMap googleMap) {
         LatLng tempatnya=new LatLng(lat,lang);
         googleMap.addMarker(new MarkerOptions().position(tempatnya)).setTitle(kegiatan);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(tempatnya));
+        CameraPosition cameraPosition=new CameraPosition.Builder().target(tempatnya).zoom(17).build();
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
 }
