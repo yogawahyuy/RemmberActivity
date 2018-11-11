@@ -120,6 +120,7 @@ public class RincianKegiatanActivity extends AppCompatActivity implements OnMapR
                 public void onSuccess(Void aVoid) {
                     Message.message(getApplicationContext(),"Kegiatan Berhasil dihapus");
                     startActivity(new Intent(RincianKegiatanActivity.this,LihatKegiatanActivity.class));
+                    finish();
 
                 }
             });

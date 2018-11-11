@@ -18,6 +18,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
@@ -32,6 +33,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import org.d3ifcool.rememberactivities.Adapter.AdapterLihatKegiatan;
 import org.d3ifcool.rememberactivities.Alarm.AlarmRecivier;
@@ -91,6 +93,7 @@ public class TambahKegiatanActivity extends AppCompatActivity{
     private FirebaseUser mFireBaseuser;
     private ArrayList<Kegiatan> daftarKegiatan;
     ConnectivityManager connectivityManager;
+    int hour,minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,18 +137,25 @@ public class TambahKegiatanActivity extends AppCompatActivity{
         mCurrentUri = intent.getData();
 
         //Inisialisasi untuk place picker
-        final PlacePicker.IntentBuilder builder=new PlacePicker.IntentBuilder();
+        connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (connectivityManager.getActiveNetwork() != null && connectivityManager.getActiveNetworkInfo().isAvailable() && connectivityManager.getActiveNetworkInfo().isConnected()) {
+                final PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
-        tempat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try{
-                    startActivityForResult(builder.build(TambahKegiatanActivity.this),PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                }
+                tempat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            startActivityForResult(builder.build(TambahKegiatanActivity.this), PLACE_PICKER_REQUEST);
+                        } catch (GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }else{
+                Toast.makeText(this, "Mohon cek Koneksi Anda", Toast.LENGTH_SHORT).show();
             }
-        });
+        }
 
         idKegiatan=getIntent().getIntExtra("id",0);
         Log.e("cek id", "onCreate: "+idKegiatan );
@@ -210,21 +220,24 @@ public class TambahKegiatanActivity extends AppCompatActivity{
 
     private void tambahData(){
         //get email
-        connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager.getActiveNetwork()!=null && connectivityManager.getActiveNetworkInfo().isAvailable()&& connectivityManager.getActiveNetworkInfo().isConnected()) {
-            if (!isEmpty(namaKgt.getText().toString()) && !isEmpty(tglKgt.getText().toString()) && !isEmpty(jamMulai.getText().toString()) && !isEmpty(jamBrakhir.getText().toString())) {
-                if (isEmpty(catatan.getText().toString())) {
-                    String tempCatat = "Anda Tidak memasukan Catatan";
-                    submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(), lang, lat, tempCatat, email));
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (connectivityManager.getActiveNetwork()!=null && connectivityManager.getActiveNetworkInfo().isAvailable()&& connectivityManager.getActiveNetworkInfo().isConnected()) {
+                if (!isEmpty(namaKgt.getText().toString()) && !isEmpty(tglKgt.getText().toString()) && !isEmpty(jamMulai.getText().toString()) && !isEmpty(jamBrakhir.getText().toString())) {
+                    if (isEmpty(catatan.getText().toString())) {
+                        String tempCatat = "Anda Tidak memasukan Catatan";
+                        submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(), lang, lat, tempCatat, email));
+
+                    } else {
+                        submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(), lang, lat, catatan.getText().toString(), email));
+                    }
                 } else {
-                    submitKegiatan(new Kegiatan(namaKgt.getText().toString(), tglKgt.getText().toString(), jamMulai.getText().toString(), jamBrakhir.getText().toString(), tempat.getText().toString(), lang, lat, catatan.getText().toString(), email));
+                    Message.message(this, "Terdapat Field yang Kosong");
                 }
-            } else {
-                Message.message(this, "Terdapat Field yang Kosong");
+            }else{
+                Message.message(this,"Mohon Periksa Koneksi Anda");
             }
-        }else{
-            Message.message(this,"Mohon Periksa Koneksi Anda");
         }
     }
 
@@ -382,12 +395,13 @@ public class TambahKegiatanActivity extends AppCompatActivity{
     TimePickerDialog.OnTimeSetListener onTimeSetListener=new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker timePicker, int i, int i1) {
+            hour=i;
+            minute=i1;
             jamMulai.setText(i+":"+i1);
             calSet.set(tahun,bulan,hari);
             calSet.set(Calendar.HOUR_OF_DAY, i);
             calSet.set(Calendar.MINUTE, i1);
-            calSet.set(Calendar.SECOND, 0);
-            calSet.set(Calendar.MILLISECOND, 0);
+            calSet.set(Calendar.SECOND,0);
           //  setAlarm(calSet);
 
         }
@@ -414,9 +428,13 @@ public class TambahKegiatanActivity extends AppCompatActivity{
             calSetSelesai.set(tahun,bulan,hari);
             calSetSelesai.set(Calendar.HOUR_OF_DAY, i);
             calSetSelesai.set(Calendar.MINUTE, i1);
-            calSetSelesai.set(Calendar.SECOND, 0);
-            calSetSelesai.set(Calendar.MILLISECOND, 0);
+            calSetSelesai.set(Calendar.SECOND,0);
            // setAlarmselesai(calSet);
+            if (hour>=i && minute>=i1){
+                Toast.makeText(TambahKegiatanActivity.this, "Jam Berakhir tidak boleh kurang dari jam mulai", Toast.LENGTH_SHORT).show();
+                jamBrakhir.setText("");
+            }
+
 
         }
     };
@@ -501,6 +519,7 @@ public class TambahKegiatanActivity extends AppCompatActivity{
                         hari=day;
                     }
                 },mYear,mMonth,mDay);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000);
                 datePickerDialog.show();
             }
         });

@@ -3,11 +3,14 @@ package org.d3ifcool.rememberactivities;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -19,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.MapView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +48,9 @@ public class LihatKegiatanActivity extends AppCompatActivity{
     private RecyclerView.Adapter adapter;
     private LinearLayoutManager layoutManager;
     private ArrayList<Kegiatan> daftarKegiatan;
-    View mEmptyView;
+    private ConnectivityManager connectivityManager;
+    TextView mEmptyView;
+    TextView koneksi;
     ProgressDialog progressDialog;
     String email;
     @Override
@@ -61,44 +67,55 @@ public class LihatKegiatanActivity extends AppCompatActivity{
                 layoutManager.getOrientation());
         rvView.addItemDecoration(divider);
         mEmptyView=findViewById(R.id.emptyview_kegiatan);
+        koneksi=findViewById(R.id.erorkoneksi_kegiatan);
         daftarKegiatan=new ArrayList<>();
-        progressDialog=ProgressDialog.show(LihatKegiatanActivity.this,"Sedang Mengambil Kegiatan Anda","Harap Tunggu",false,false);
-
-
-        //database
-        mFireBaseuser= FirebaseAuth.getInstance().getCurrentUser();
-        database= FirebaseDatabase.getInstance().getReference("Kegiatan");
-        email=mFireBaseuser.getUid();
-        //mengambil data
-        database.child(email.toString()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                progressDialog.dismiss();
-                for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()){
-                    Kegiatan kegiatan=noteDataSnapshot.getValue(Kegiatan.class);
-                    kegiatan.setKey(noteDataSnapshot.getKey());
-                    daftarKegiatan.add(kegiatan);
-                }
-                adapter=new AdapterLihatKegiatan(daftarKegiatan, LihatKegiatanActivity.this,mEmptyView,new AdapterLihatKegiatan.ClickHandler() {
+        connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (connectivityManager.getActiveNetwork() != null && connectivityManager.getActiveNetworkInfo().isAvailable() && connectivityManager.getActiveNetworkInfo().isConnected()) {
+                progressDialog=ProgressDialog.show(LihatKegiatanActivity.this,"Sedang Mengambil Kegiatan Anda","Harap Tunggu",false,false);
+                //database
+                mFireBaseuser= FirebaseAuth.getInstance().getCurrentUser();
+                database= FirebaseDatabase.getInstance().getReference("Kegiatan");
+                email=mFireBaseuser.getUid();
+                //mengambil data
+                database.child(email.toString()).addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onItemClick(int posisi) {
-                        Log.d("lihat kegiatan", "onItemClick: click");
-                      Intent intent=new Intent(LihatKegiatanActivity.this,RincianKegiatanActivity.class);
-                      intent.putExtra("data",daftarKegiatan.get(posisi));
-                      intent.putExtra("id",posisi);
-                        Log.e("onclick lihat", "onItemClick: "+daftarKegiatan.get(posisi) );
-                      startActivity(intent);
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        progressDialog.dismiss();
+                        for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()){
+                            Kegiatan kegiatan=noteDataSnapshot.getValue(Kegiatan.class);
+                            kegiatan.setKey(noteDataSnapshot.getKey());
+                            daftarKegiatan.add(kegiatan);
+                        }
+                        adapter=new AdapterLihatKegiatan(daftarKegiatan, LihatKegiatanActivity.this,mEmptyView,new AdapterLihatKegiatan.ClickHandler() {
+                            @Override
+                            public void onItemClick(int posisi) {
+                                Log.d("lihat kegiatan", "onItemClick: click");
+                                Intent intent=new Intent(LihatKegiatanActivity.this,RincianKegiatanActivity.class);
+                                intent.putExtra("data",daftarKegiatan.get(posisi));
+                                intent.putExtra("id",posisi);
+                                Log.e("onclick lihat", "onItemClick: "+daftarKegiatan.get(posisi) );
+                                startActivity(intent);
+                            }
+                        });
+                        rvView.setAdapter(adapter);
+                        updateEmptyView();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d("Lihat kegiatan", "onCancelled: "+databaseError);
                     }
                 });
-                rvView.setAdapter(adapter);
-                updateEmptyView();
-            }
+            }else {
+                mEmptyView.setText("Kegiatan Tidak bisa ditampilkan \n Mohon Cek Koneksi Anda");
+               // koneksi.setVisibility(View.VISIBLE);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("Lihat kegiatan", "onCancelled: "+databaseError);
             }
-        });
+        }
+
+
+
 
 
 
