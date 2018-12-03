@@ -137,9 +137,9 @@ public class TambahKegiatanActivity extends AppCompatActivity{
         mCurrentUri = intent.getData();
 
         //Inisialisasi untuk place picker
-        connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (connectivityManager.getActiveNetwork() != null && connectivityManager.getActiveNetworkInfo().isAvailable() && connectivityManager.getActiveNetworkInfo().isConnected()) {
+//        connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (connectivityManager.getActiveNetwork() != null && connectivityManager.getActiveNetworkInfo().isAvailable() && connectivityManager.getActiveNetworkInfo().isConnected()) {
                 final PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
                 tempat.setOnClickListener(new View.OnClickListener() {
@@ -152,10 +152,10 @@ public class TambahKegiatanActivity extends AppCompatActivity{
                         }
                     }
                 });
-            }else{
-                Toast.makeText(this, "Mohon cek Koneksi Anda", Toast.LENGTH_SHORT).show();
-            }
-        }
+//            }else{
+//                Toast.makeText(this, "Mohon cek Koneksi Anda", Toast.LENGTH_SHORT).show();
+//            }
+//        }
 
         idKegiatan=getIntent().getIntExtra("id",0);
         Log.e("cek id", "onCreate: "+idKegiatan );

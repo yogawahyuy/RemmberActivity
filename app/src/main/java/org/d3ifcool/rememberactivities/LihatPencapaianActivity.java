@@ -61,6 +61,7 @@ public class LihatPencapaianActivity extends AppCompatActivity {
         rvView.addItemDecoration(divider);
         mEmptyView=findViewById(R.id.emptyview_pencapaian);
         daftarPencapaian=new ArrayList<>();
+        daftarPencapaian.add(new Pencapaian());
         connectivityManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (connectivityManager.getActiveNetwork() != null && connectivityManager.getActiveNetworkInfo().isAvailable() && connectivityManager.getActiveNetworkInfo().isConnected()) {
